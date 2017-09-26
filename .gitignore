@@ -14,17 +14,17 @@ local.properties
 .signing/
 
 # User-specific configurations
-.idea/libraries/
-.idea/workspace.xml
-.idea/tasks.xml
-.idea/.name
-.idea/compiler.xml
-.idea/copyright/profiles_settings.xml
-.idea/encodings.xml
-.idea/misc.xml
-.idea/modules.xml
-.idea/scopes/scope_settings.xml
-.idea/vcs.xml
+NBAAlarm/.idea/libraries/
+NBAAlarm/.idea/workspace.xml
+NBAAlarm/.idea/tasks.xml
+NBAAlarm/.idea/.name
+NBAAlarm/.idea/compiler.xml
+NBAAlarm/.idea/copyright/profiles_settings.xml
+NBAAlarm/.idea/encodings.xml
+NBAAlarm/.idea/misc.xml
+NBAAlarm/.idea/modules.xml
+NBAAlarm/.idea/scopes/scope_settings.xml
+NBAAlarm/.idea/vcs.xml
 *.iml
 
 # OS-specific files
