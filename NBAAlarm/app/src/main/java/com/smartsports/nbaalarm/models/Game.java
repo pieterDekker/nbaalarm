@@ -1,7 +1,6 @@
-package com.smartsports.nbaalarm.Data;
+package com.smartsports.nbaalarm.models;
 
 import java.util.Date;
-import java.util.StringTokenizer;
 
 /**
  * Created by pieter on 22-9-17.

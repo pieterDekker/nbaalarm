@@ -1,7 +1,6 @@
-package com.smartsports.nbaalarm.Data;
+package com.smartsports.nbaalarm.adapters;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.smartsports.nbaalarm.R;
+import com.smartsports.nbaalarm.models.Game;
 
 import java.util.ArrayList;
 

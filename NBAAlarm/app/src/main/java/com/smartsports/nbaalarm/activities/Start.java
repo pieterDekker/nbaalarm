@@ -1,18 +1,13 @@
-package com.smartsports.nbaalarm;
+package com.smartsports.nbaalarm.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
-import com.smartsports.nbaalarm.Data.Game;
-import com.smartsports.nbaalarm.Data.GameAdapter;
+import com.smartsports.nbaalarm.R;
+import com.smartsports.nbaalarm.models.Game;
+import com.smartsports.nbaalarm.adapters.GameAdapter;
 
 import java.util.ArrayList;
 import java.util.Date;
