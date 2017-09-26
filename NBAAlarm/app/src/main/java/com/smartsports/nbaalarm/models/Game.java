@@ -8,15 +8,17 @@ import java.util.Date;
 
 public class Game {
     private String team_1;
-
     private String team_2;
-
     private Date start;
+    private Date end;
+    private boolean alarm;
 
-    public Game(String team_1, String team_2, Date start) {
+    public Game(String team_1, String team_2, Date start, Date end) {
         this.team_1 = team_1;
         this.team_2 = team_2;
         this.start = start;
+        this.end = end;
+        this.alarm = false;
     }
 
     public String toString() {
@@ -46,4 +48,20 @@ public class Game {
 //    public void setStart(Date start) {
 //        this.start = start;
 //    }
+
+    public Date getEnd() {
+        return end;
+    }
+
+//    public void setEnd(Date end) {
+//        this.end = end;
+//    }
+
+    public void setAlarm(boolean b) {
+        this.alarm = b;
+    }
+
+    public boolean getAlarm() {
+        return this.alarm;
+    }
 }
