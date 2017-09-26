@@ -2,6 +2,8 @@ package com.smartsports.nbaalarm.activities;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.smartsports.nbaalarm.R;
@@ -30,9 +32,14 @@ public class DetailledGame extends AppCompatActivity {
         }
     }
 
-    public void setAlarm(Game game) {
-        // Set an alarm for the current game being viewed
-        game.setAlarm(true);
+    public void setAlarm(View view) {
+        if(game.getAlarm()) {
+            // Remove an alarm for the current game
+            game.setAlarm(false);
+        } else {
+            // Set an alarm for the current game
+            game.setAlarm(true);
+        }
         // Confirm to the user that the alarm is set
         this.setAlarmText();
     }
@@ -53,18 +60,21 @@ public class DetailledGame extends AppCompatActivity {
     private void setTimes() {
         SimpleDateFormat sdf = new SimpleDateFormat(getString(R.string.timeformat));
         TextView dgvStartingTime = (TextView)findViewById(R.id.dgvStartingTime);
-        dgvStartingTime.setText(sdf.format(game.getStart()));
+        dgvStartingTime.setText(getString(R.string.startingtime) + " " + sdf.format(game.getStart()));
         TextView dgvEndTime = (TextView)findViewById(R.id.dgvEndTime);
-        dgvStartingTime.setText(sdf.format(game.getEnd()));
+        dgvEndTime.setText(getString(R.string.endtime) + " " + sdf.format(game.getEnd()));
     }
 
     private void setAlarmText() {
         // Set alarm text
         TextView dgvAlarmIsSet = (TextView) findViewById(R.id.dgvAlarmIsSet);
+        Button dgvSetAlarmButton = (Button) findViewById(R.id.dgvSetAlarmButton);
         if(game.getAlarm()) {
-            dgvAlarmIsSet.setText("Alarm set for the beginning of the match");
+            dgvAlarmIsSet.setText(getString(R.string.alarmset));
+            dgvSetAlarmButton.setText(getString(R.string.removealarm));
         } else {
-            dgvAlarmIsSet.setText("Alarm not set");
+            dgvAlarmIsSet.setText(getString(R.string.alarmnotset));
+            dgvSetAlarmButton.setText(getString(R.string.setalarm));
         }
     }
 }
