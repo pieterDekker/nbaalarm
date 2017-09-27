@@ -43,10 +43,10 @@ public class Start extends AppCompatActivity {
         game_list.setAdapter(adapter);
         game_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-                Log.d("Main Activity","Team " +  Start.this.games.get(arg2).getTeam_1() + " vs " + Start.this.games.get(arg2).getTeam_2() );
-                Intent detailledGameIntent = new Intent(getApplicationContext(), DetailledGame.class);
-                detailledGameIntent.putExtra("game", Start.this.games.get(arg2));
+            public void onItemClick(AdapterView<?> adapterView, View view, int item, long position) {
+                Log.d("Main Activity","Team " +  Start.this.games.get(item).getTeam_1() + " vs " + Start.this.games.get(item).getTeam_2() );
+                Intent detailledGameIntent = new Intent(getApplicationContext(), DetailedGame.class);
+                detailledGameIntent.putExtra("game", Start.this.games.get(item));
                 startActivity(detailledGameIntent);
             }
         });

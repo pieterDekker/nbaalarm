@@ -15,13 +15,13 @@ import java.text.SimpleDateFormat;
  * Created by dejon on 9/26/2017.
  */
 
-public class DetailledGame extends AppCompatActivity {
+public class DetailedGame extends AppCompatActivity {
     private Game game;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.detailled_game_view);
+        setContentView(R.layout.detailed_game_view);
 
         if(getIntent().hasExtra("game")) {
             this.game = (Game) getIntent().getExtras().get("game");
@@ -52,17 +52,17 @@ public class DetailledGame extends AppCompatActivity {
     }
 
     private void setDate() {
-        SimpleDateFormat sdf = new SimpleDateFormat(getString(R.string.dateformat));
+        SimpleDateFormat sdf = new SimpleDateFormat(getString(R.string.date_format));
         TextView dgvDate = (TextView)findViewById(R.id.dgvDate);
         dgvDate.setText(sdf.format(game.getStart()));
     }
 
     private void setTimes() {
-        SimpleDateFormat sdf = new SimpleDateFormat(getString(R.string.timeformat));
+        SimpleDateFormat sdf = new SimpleDateFormat(getString(R.string.time_format));
         TextView dgvStartingTime = (TextView)findViewById(R.id.dgvStartingTime);
-        dgvStartingTime.setText(getString(R.string.startingtime) + " " + sdf.format(game.getStart()));
+        dgvStartingTime.setText(getString(R.string.starting_time) + " " + sdf.format(game.getStart()));
         TextView dgvEndTime = (TextView)findViewById(R.id.dgvEndTime);
-        dgvEndTime.setText(getString(R.string.endtime) + " " + sdf.format(game.getEnd()));
+        dgvEndTime.setText(getString(R.string.end_time) + " " + sdf.format(game.getEnd()));
     }
 
     private void setAlarmText() {
@@ -70,11 +70,11 @@ public class DetailledGame extends AppCompatActivity {
         TextView dgvAlarmIsSet = (TextView) findViewById(R.id.dgvAlarmIsSet);
         Button dgvSetAlarmButton = (Button) findViewById(R.id.dgvSetAlarmButton);
         if(game.getAlarm()) {
-            dgvAlarmIsSet.setText(getString(R.string.alarmset));
-            dgvSetAlarmButton.setText(getString(R.string.removealarm));
+            dgvAlarmIsSet.setText(getString(R.string.alarm_set));
+            dgvSetAlarmButton.setText(getString(R.string.remove_alarm));
         } else {
-            dgvAlarmIsSet.setText(getString(R.string.alarmnotset));
-            dgvSetAlarmButton.setText(getString(R.string.setalarm));
+            dgvAlarmIsSet.setText(getString(R.string.alarm_not_set));
+            dgvSetAlarmButton.setText(getString(R.string.set_alarm));
         }
     }
 }
