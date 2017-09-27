@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">NBA Alarm</string>
-    <string name="refresh_game_list">Refresh gamelist</string>
     <string name="plays">plays</string>
     <string name="at">at</string>
     <string name="date_format">dd-M-yyyy</string>
