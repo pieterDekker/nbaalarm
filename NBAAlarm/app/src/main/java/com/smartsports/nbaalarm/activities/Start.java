@@ -35,9 +35,11 @@ public class Start extends AppCompatActivity {
             System.err.println("Error converting str to date");
             System.exit(1);
         }
+
+        showGames();
     }
 
-    public void showGames(View view) {
+    public void showGames() {
         GameAdapter adapter = new GameAdapter(this, games);
         ListView game_list = (ListView) findViewById(R.id.game_list);
         game_list.setAdapter(adapter);
