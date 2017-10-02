@@ -4,8 +4,10 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.smartsports.nbaalarm.R;
+import com.smartsports.nbaalarm.models.Alarm;
 import com.smartsports.nbaalarm.models.Game;
 import com.smartsports.nbaalarm.adapters.GameAdapter;
 
@@ -32,6 +34,8 @@ public class Start extends AppCompatActivity {
         ListView game_list = (ListView) findViewById(R.id.game_list);
 
         game_list.setAdapter(adapter);
+
+        new Alarm(new Date(System.currentTimeMillis() + 1500), getApplicationContext());
     }
 
 }

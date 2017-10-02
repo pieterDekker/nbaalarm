@@ -1,12 +1,13 @@
 package com.smartsports.nbaalarm.models;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by pieter on 22-9-17.
  */
 
-public class Game {
+public class Game implements Serializable {
     private String team_1;
 
     private String team_2;
