@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="1"
+    app:layout_collapseParallaxMultiplier="1.0">
+
+    <TextView
+        android:id="@+id/dgvTeam1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.08"
+        android:text="team1"
+        android:textAlignment="center"
+        android:textAppearance="@android:style/TextAppearance.Material.Small"
+        android:textSize="24sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.08"
+        android:text="Versus"
+        android:textAlignment="center"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/dgvTeam2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.08"
+        android:text="team2"
+        android:textAlignment="center"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/dgvDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.08"
+        android:text="Date"
+        android:textAlignment="viewStart"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/dgvStartingTime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.08"
+        android:text="Starting time: unknown"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/dgvEndTime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.08"
+        android:text="End time: unknown"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/dgvAlarmIsSet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.08"
+        android:text="Alarm is not set"
+        android:textSize="18sp" />
+
+    <Button
+        android:id="@+id/dgvSetAlarmButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.08"
+        android:onClick="setAlarm"
+        android:text="Set alarm for this game" />
+</LinearLayout>
