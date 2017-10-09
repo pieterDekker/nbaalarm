@@ -9,11 +9,13 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.smartsports.nbaalarm.R;
-import com.smartsports.nbaalarm.adapters.GameAdapter;
+import com.smartsports.nbaalarm.models.Alarm;
 import com.smartsports.nbaalarm.models.Game;
+import com.smartsports.nbaalarm.adapters.GameAdapter;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Start extends AppCompatActivity {
     private ArrayList<Game> games;
@@ -43,6 +45,7 @@ public class Start extends AppCompatActivity {
         GameAdapter adapter = new GameAdapter(this, games);
         ListView game_list = (ListView) findViewById(R.id.game_list);
         game_list.setAdapter(adapter);
+        new Alarm(new Date(System.currentTimeMillis() + 2000), getApplicationContext());
         game_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int item, long position) {
