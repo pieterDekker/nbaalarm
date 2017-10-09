@@ -48,10 +48,9 @@ public class Start extends AppCompatActivity {
         GameAdapter adapter;
         try {
             if(connector.ready) {
-                adapter = new GameAdapter(this, connector.games);
-            } else {
-                adapter = new GameAdapter(this, games);
+                games = connector.games;
             }
+            adapter = new GameAdapter(this, games);
         } catch (Exception e) {
             Log.d("showGames", "Getting games from connector failed");
             return;
