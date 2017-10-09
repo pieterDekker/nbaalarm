@@ -41,13 +41,17 @@ public class Start extends AppCompatActivity {
 
         games = getDataTest();
         getDataNBA("http://data.nba.net/10s/prod/v1/2017/schedule.json");
-        showGames();
+        showGames(null);
     }
 
-    public void showGames() {
+    public void showGames(View view) {
         GameAdapter adapter;
         try {
-            adapter = new GameAdapter(this, games);
+            if(connector.ready) {
+                adapter = new GameAdapter(this, connector.games);
+            } else {
+                adapter = new GameAdapter(this, games);
+            }
         } catch (Exception e) {
             Log.d("showGames", "Getting games from connector failed");
             return;
@@ -90,13 +94,13 @@ public class Start extends AppCompatActivity {
     class NBADatabaseConnector extends AsyncTask<String, String, Void> {
 
         private ProgressDialog progressDialog = new ProgressDialog(Start.this);
-        InputStream inputStream = null;
-        String result = "";
-        ArrayList<Game> games = new ArrayList<>();
+        private InputStream inputStream = null;
+        private String result = "";
+        public ArrayList<Game> games = new ArrayList<>();
+        public boolean ready = false;
 
         @Override
         protected Void doInBackground(String... params) {
-            Log.d("MAIN XD", "Started doInBg()");
             InputStream inputStream;
             HttpURLConnection urlConnection;
             try {
@@ -133,6 +137,7 @@ public class Start extends AppCompatActivity {
         protected void onPostExecute(Void v) {
             //parse JSON data
             try {
+                ready = false;
                 JSONObject data = new JSONObject(result);
                 JSONObject league = data.getJSONObject("league");
                 JSONArray leagueGames = league.getJSONArray("standard");
@@ -143,7 +148,7 @@ public class Start extends AppCompatActivity {
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-ddhh:mm:ss.sss");
                 while(((game = leagueGames.getJSONObject(1)) != null) && (i<30)) {
                     try {
-                        startTime = sdf.parse(game.getString("startTimeUTC").replaceAll("[TZ]",""));
+                        startTime = sdf.parse(game.getString("startTimeUTC").replaceAll("[TZ]", ""));
                         games.add(new Game(game.getJSONObject("hTeam").getString("teamId"), game.getJSONObject("vTeam").getString("teamId"), startTime, startTime));
                     } catch (Exception e) {
                         Log.d("DB init", "Game not added " + e.toString());
@@ -152,6 +157,8 @@ public class Start extends AppCompatActivity {
                 }
             } catch (JSONException e) {
                 Log.e("JSONException", "Error: " + e.getMessage().toString());
+            } finally {
+                ready = true;
             }
         }
     }
