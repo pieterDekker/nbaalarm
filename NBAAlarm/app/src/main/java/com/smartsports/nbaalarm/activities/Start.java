@@ -12,6 +12,7 @@ import android.widget.ListView;
 
 import com.smartsports.nbaalarm.R;
 import com.smartsports.nbaalarm.adapters.GameAdapter;
+import com.smartsports.nbaalarm.models.Alarm;
 import com.smartsports.nbaalarm.models.Game;
 
 import org.json.JSONArray;
@@ -44,6 +45,10 @@ public class Start extends AppCompatActivity {
         connector = new NBADatabaseConnector();
         games = getDataTest();
         showGames(null);
+    }
+
+    public void setAlarm() {
+        new Alarm(new Date(System.currentTimeMillis() + 2000), getApplicationContext());
     }
 
     public void showGames(View view) {
