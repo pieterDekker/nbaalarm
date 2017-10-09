@@ -64,33 +64,17 @@ public class Game implements Parcelable {
         return team_1;
     }
 
-//    public void setTeam_1(String team_1) {
-//        this.team_1 = team_1;
-//    }
-
     public String getTeam_2() {
         return team_2;
     }
-
-//    public void setTeam_2(String team_2) {
-//        this.team_2 = team_2;
-//    }
 
     public Date getStart() {
         return start;
     }
 
-//    public void setStart(Date start) {
-//        this.start = start;
-//    }
-
     public Date getEnd() {
         return end;
     }
-
-//    public void setEnd(Date end) {
-//        this.end = end;
-//    }
 
     public void setAlarm(boolean b) {
         this.alarm = b;
