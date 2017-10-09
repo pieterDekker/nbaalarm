@@ -1,8 +1,6 @@
 package com.smartsports.nbaalarm.activities;
 
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -16,6 +14,7 @@ import com.smartsports.nbaalarm.R;
 import com.smartsports.nbaalarm.adapters.GameAdapter;
 import com.smartsports.nbaalarm.models.Game;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -27,10 +26,12 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 
 public class Start extends AppCompatActivity {
     private ArrayList<Game> games;
+    private NBADatabaseConnector connector;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,13 +39,19 @@ public class Start extends AppCompatActivity {
         System.err.println("Start");
         setContentView(R.layout.activity_start);
 
-        games = getDataNBA("https://graph.facebook.com/19292868552");
-
+        games = getDataTest();
+        getDataNBA("http://data.nba.net/10s/prod/v1/2017/schedule.json");
         showGames();
     }
 
     public void showGames() {
-        GameAdapter adapter = new GameAdapter(this, games);
+        GameAdapter adapter;
+        try {
+            adapter = new GameAdapter(this, games);
+        } catch (Exception e) {
+            Log.d("showGames", "Getting games from connector failed");
+            return;
+        }
         ListView game_list = (ListView) findViewById(R.id.game_list);
         game_list.setAdapter(adapter);
         game_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -75,7 +82,8 @@ public class Start extends AppCompatActivity {
     }
 
     private ArrayList<Game> getDataNBA(String link) {
-        new NBADatabaseConnector().execute("http://data.nba.net/10s/prod/v1/2017/schedule.json");
+        connector = new NBADatabaseConnector();
+        connector.execute(link);
         return getDataTest();
     }
 
@@ -84,16 +92,7 @@ public class Start extends AppCompatActivity {
         private ProgressDialog progressDialog = new ProgressDialog(Start.this);
         InputStream inputStream = null;
         String result = "";
-
-        protected void onPreExecute() {
-            progressDialog.setMessage("Downloading your data...");
-            progressDialog.show();
-            progressDialog.setOnCancelListener(new OnCancelListener() {
-                public void onCancel(DialogInterface arg0) {
-                    NBADatabaseConnector.this.cancel(true);
-                }
-            });
-        }
+        ArrayList<Game> games = new ArrayList<>();
 
         @Override
         protected Void doInBackground(String... params) {
@@ -116,7 +115,6 @@ public class Start extends AppCompatActivity {
                 StringBuilder sBuilder = new StringBuilder();
                 String line = null;
                 while ((line = bReader.readLine()) != null) {
-                    Log.d("JSON Text", line);
                     sBuilder.append(line + "\n");
                 }
 
@@ -135,13 +133,26 @@ public class Start extends AppCompatActivity {
         protected void onPostExecute(Void v) {
             //parse JSON data
             try {
-                JSONObject jObject = new JSONObject(result);
+                JSONObject data = new JSONObject(result);
+                JSONObject league = data.getJSONObject("league");
+                JSONArray leagueGames = league.getJSONArray("standard");
+                JSONObject game;
 
+                Date startTime;
+                int i = 0;
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-ddhh:mm:ss.sss");
+                while(((game = leagueGames.getJSONObject(1)) != null) && (i<30)) {
+                    try {
+                        startTime = sdf.parse(game.getString("startTimeUTC").replaceAll("[TZ]",""));
+                        games.add(new Game(game.getJSONObject("hTeam").getString("teamId"), game.getJSONObject("vTeam").getString("teamId"), startTime, startTime));
+                    } catch (Exception e) {
+                        Log.d("DB init", "Game not added " + e.toString());
+                    }
+                    i++;
+                }
             } catch (JSONException e) {
                 Log.e("JSONException", "Error: " + e.getMessage().toString());
             }
-
-            this.progressDialog.dismiss();
         }
     }
 }
