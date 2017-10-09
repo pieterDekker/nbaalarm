@@ -11,7 +11,9 @@ import android.widget.TextView;
 import com.smartsports.nbaalarm.R;
 import com.smartsports.nbaalarm.models.Game;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.TimeZone;
 
 /**
  * Created by pieter on 23-9-17.
@@ -39,7 +41,9 @@ public class GameAdapter extends ArrayAdapter {
         // Populate the data into the template view using the data object
         tvTeam_1.setText(game != null ? game.getTeam_1() : "Null");
         tvTeam_2.setText(game != null ? game.getTeam_2() : "Null");
-        tvTime.setText(  game != null ? game.getStart().toString() : "Null");
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy HH:mm:ss");
+        sdf.setTimeZone(TimeZone.getTimeZone("GMT+1"));
+        tvTime.setText(  game != null ? sdf.format(game.getStart()) : "Null");
         // Return the completed view to render on screen
         return convertView;
     }
