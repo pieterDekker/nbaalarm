@@ -1,6 +1,10 @@
 package com.smartsports.nbaalarm.activities;
 
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -12,8 +16,18 @@ import com.smartsports.nbaalarm.R;
 import com.smartsports.nbaalarm.adapters.GameAdapter;
 import com.smartsports.nbaalarm.models.Game;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+
 
 public class Start extends AppCompatActivity {
     private ArrayList<Game> games;
@@ -24,17 +38,7 @@ public class Start extends AppCompatActivity {
         System.err.println("Start");
         setContentView(R.layout.activity_start);
 
-        games = new ArrayList<Game>();
-        // Test data
-        try {
-            SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
-            games.add(new Game("Tigers", "Bears", sdf.parse("28-09-2017 18:10:00"), sdf.parse("28-09-2017 20:00:01")));
-            games.add(new Game("Snakes", "Elephants", sdf.parse("30-09-2017 13:00:00"), sdf.parse("30-09-2017 15:15:00")));
-            games.add(new Game("Mice", "Cats", sdf.parse("04-10-2017 18:00:00"), sdf.parse("04-10-2017 20:00:00")));
-        } catch (Exception e) {
-            System.err.println("Error converting str to date");
-            System.exit(1);
-        }
+        games = getDataNBA("https://graph.facebook.com/19292868552");
 
         showGames();
     }
@@ -52,5 +56,92 @@ public class Start extends AppCompatActivity {
                 startActivity(detailledGameIntent);
             }
         });
+    }
+
+    private ArrayList<Game> getDataTest() {
+        games = new ArrayList<Game>();
+        // Test data
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
+            games.add(new Game("Tigers", "Bears", sdf.parse("28-09-2017 18:10:00"), sdf.parse("28-09-2017 20:00:01")));
+            games.add(new Game("Snakes", "Elephants", sdf.parse("30-09-2017 13:00:00"), sdf.parse("30-09-2017 15:15:00")));
+            games.add(new Game("Mice", "Cats", sdf.parse("04-10-2017 18:00:00"), sdf.parse("04-10-2017 20:00:00")));
+        } catch (Exception e) {
+            Log.d("Main view", "Error converting str to date");
+            System.exit(1);
+        }
+
+        return games;
+    }
+
+    private ArrayList<Game> getDataNBA(String link) {
+        new NBADatabaseConnector().execute("http://data.nba.net/10s/prod/v1/2017/schedule.json");
+        return getDataTest();
+    }
+
+    class NBADatabaseConnector extends AsyncTask<String, String, Void> {
+
+        private ProgressDialog progressDialog = new ProgressDialog(Start.this);
+        InputStream inputStream = null;
+        String result = "";
+
+        protected void onPreExecute() {
+            progressDialog.setMessage("Downloading your data...");
+            progressDialog.show();
+            progressDialog.setOnCancelListener(new OnCancelListener() {
+                public void onCancel(DialogInterface arg0) {
+                    NBADatabaseConnector.this.cancel(true);
+                }
+            });
+        }
+
+        @Override
+        protected Void doInBackground(String... params) {
+            Log.d("MAIN XD", "Started doInBg()");
+            InputStream inputStream;
+            HttpURLConnection urlConnection;
+            try {
+                URL url = new URL(params[0]);
+                urlConnection = (HttpURLConnection) url.openConnection();
+            } catch (Exception e) {
+                Log.w("Get NBA connection", e.toString());
+                return null;
+            }
+
+            try {
+                // Set up HTTP post
+                inputStream = new BufferedInputStream(urlConnection.getInputStream());
+                // Convert response to string using String Builder
+                BufferedReader bReader = new BufferedReader(new InputStreamReader(inputStream, "utf-8"), 8);
+                StringBuilder sBuilder = new StringBuilder();
+                String line = null;
+                while ((line = bReader.readLine()) != null) {
+                    Log.d("JSON Text", line);
+                    sBuilder.append(line + "\n");
+                }
+
+                inputStream.close();
+                result = sBuilder.toString();
+
+            } catch (Exception e) {
+                Log.w("Get NBA connection", e.toString());
+            } finally {
+                urlConnection.disconnect();
+            }
+
+            return null;
+        }
+
+        protected void onPostExecute(Void v) {
+            //parse JSON data
+            try {
+                JSONObject jObject = new JSONObject(result);
+
+            } catch (JSONException e) {
+                Log.e("JSONException", "Error: " + e.getMessage().toString());
+            }
+
+            this.progressDialog.dismiss();
+        }
     }
 }
