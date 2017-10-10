@@ -13,7 +13,7 @@
             android:id="@+id/refresh"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onClick="showGames"
+            android:onClick="getDataNBA"
             android:padding="15sp"
             android:text="Refresh Game List" />
 

@@ -34,39 +34,29 @@ import java.util.TimeZone;
 
 public class Start extends AppCompatActivity {
     private ArrayList<Game> games;
-    private NBADatabaseConnector connector;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         System.err.println("Start");
         setContentView(R.layout.activity_start);
-
-        connector = new NBADatabaseConnector();
-        games = getDataTest();
-        showGames(null);
+        getDataNBA(null);
     }
 
     public void setAlarm() {
         new Alarm(new Date(System.currentTimeMillis() + 2000), getApplicationContext());
     }
 
-    public void showGames(View view) {
+    public void getDataNBA(View view) {
+        NBADatabaseConnector connector = new NBADatabaseConnector();
+        connector.execute(getString(R.string.nba_database_url));
+        games = connector.games;
+    }
+
+    private void showGames(View view) {
+        if(games==null) return;
         GameAdapter adapter;
-        try {
-            Log.d("Connector", "ready: " + connector.ready + " running: " + connector.running);
-            if(connector.ready) {
-                games = connector.games;
-            } else {
-                if(!connector.running) {
-                    connector.execute(getString(R.string.nba_database_url));
-                }
-            }
-            adapter = new GameAdapter(this, games);
-        } catch (Exception e) {
-            Log.d("showGames", "Getting games from connector failed");
-            return;
-        }
+        adapter = new GameAdapter(this, games);
         ListView game_list = (ListView) findViewById(R.id.game_list);
         game_list.setAdapter(adapter);
         game_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -102,8 +92,6 @@ public class Start extends AppCompatActivity {
         private InputStream inputStream = null;
         private String result = "";
         public ArrayList<Game> games = new ArrayList<>();
-        public boolean ready = false;
-        public boolean running = false;
 
         @Override
         protected Void doInBackground(String... params) {
@@ -143,8 +131,6 @@ public class Start extends AppCompatActivity {
         protected void onPostExecute(Void v) {
             //parse JSON data
             try {
-                ready = false;      // New data is available
-                running = true;     // Class is currently fetching new data
                 JSONObject data = new JSONObject(result);
                 JSONObject league = data.getJSONObject("league");
                 JSONArray leagueGames = league.getJSONArray("standard");
@@ -163,7 +149,6 @@ public class Start extends AppCompatActivity {
                         temptime = sdf.parse(leagueGames.getJSONObject(mid).getString("startTimeUTC").replaceAll("[TZ]", ""));
                     } catch (ParseException e) {
                         Log.d("DB init", "ParseException");
-                        running = false;
                         return;
                     }
                     if (temptime.before(currentTime)) {
@@ -178,7 +163,6 @@ public class Start extends AppCompatActivity {
                 while(((game = leagueGames.getJSONObject(i)) != null) && (i<(high+30))) {
                     try {
                         startTime = sdf.parse(game.getString("startTimeUTC").replaceAll("[TZ]", ""));
-                        Log.d("Starttime", sdf.format(startTime));
                         games.add(new Game(game.getJSONObject("hTeam").getString("teamId"), game.getJSONObject("vTeam").getString("teamId"), startTime, startTime));
                     } catch (ParseException e) {
                         Log.d("DB init", "ParseException");
@@ -188,8 +172,7 @@ public class Start extends AppCompatActivity {
             } catch (JSONException e) {
                 Log.e("JSONException", "Error: " + e.getMessage().toString());
             } finally {
-                ready = true;
-                running = false;
+                showGames(null);
             }
         }
     }
