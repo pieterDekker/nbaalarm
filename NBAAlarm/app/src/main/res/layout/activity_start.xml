@@ -10,7 +10,7 @@
     tools:context=".activities.Start">
 
         <Button
-            android:id="@+id/refresh"
+            android:id="@+id/asRefreshButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="getDataNBA"

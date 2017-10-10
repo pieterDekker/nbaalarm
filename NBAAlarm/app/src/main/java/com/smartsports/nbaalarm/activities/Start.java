@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 
 import com.smartsports.nbaalarm.R;
@@ -34,6 +35,7 @@ import java.util.TimeZone;
 
 public class Start extends AppCompatActivity {
     private ArrayList<Game> games;
+    NBADatabaseConnector connector;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +50,12 @@ public class Start extends AppCompatActivity {
     }
 
     public void getDataNBA(View view) {
-        NBADatabaseConnector connector = new NBADatabaseConnector();
+        if(connector != null && connector.running) {
+            Button refreshButton = (Button) findViewById(R.id.asRefreshButton);
+            refreshButton.setText("Fetching data faster");
+            return;
+        }
+        connector = new NBADatabaseConnector();
         connector.execute(getString(R.string.nba_database_url));
         games = connector.games;
     }
@@ -92,6 +99,14 @@ public class Start extends AppCompatActivity {
         private InputStream inputStream = null;
         private String result = "";
         public ArrayList<Game> games = new ArrayList<>();
+        boolean running = false;
+
+        @Override
+        protected void onPreExecute() {
+            running = true;
+            Button refreshButton = (Button) findViewById(R.id.asRefreshButton);
+            refreshButton.setText("Fetching data");
+        }
 
         @Override
         protected Void doInBackground(String... params) {
@@ -128,6 +143,7 @@ public class Start extends AppCompatActivity {
             return null;
         }
 
+        @Override
         protected void onPostExecute(Void v) {
             //parse JSON data
             try {
@@ -173,6 +189,9 @@ public class Start extends AppCompatActivity {
                 Log.e("JSONException", "Error: " + e.getMessage().toString());
             } finally {
                 showGames(null);
+                Button refreshButton = (Button) findViewById(R.id.asRefreshButton);
+                refreshButton.setText("Refresh Game List");
+                running = false;
             }
         }
     }
