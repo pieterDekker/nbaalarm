@@ -23,9 +23,9 @@ public class AlarmReceiver extends BroadcastReceiver {
 
         Intent alarm_activity_intent = new Intent(context, Alarm.class);
 
-        Bundle gameBundle = intent.getBundleExtra("game_bundle");
-
         alarm_activity_intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+        Bundle gameBundle = intent.getBundleExtra("game_bundle");
         alarm_activity_intent.putExtra("game_bundle", gameBundle);
 
         context.startActivity(alarm_activity_intent);

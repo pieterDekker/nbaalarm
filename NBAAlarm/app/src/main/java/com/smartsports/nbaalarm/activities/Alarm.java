@@ -1,6 +1,10 @@
 package com.smartsports.nbaalarm.activities;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -11,6 +15,7 @@ import com.smartsports.nbaalarm.R;
 import com.smartsports.nbaalarm.models.Game;
 
 public class Alarm extends AppCompatActivity {
+    private MediaPlayer player;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +34,12 @@ public class Alarm extends AppCompatActivity {
         tvTeam_1.setText(game != null ? game.getTeam_1().getName() : "No game");
         tvTeam_2.setText(game != null ? game.getTeam_2().getName() : "No game");
         tvTime.setText(game != null ? game.getStart().toString() : "No game");
+
+        Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
+
+        player = MediaPlayer.create(this, notification);
+        player.setLooping(true);
+        player.start();
     }
 
     @Override
@@ -46,6 +57,7 @@ public class Alarm extends AppCompatActivity {
     }
 
     public void dismiss(View view) {
+        player.stop();
         this.finish();
     }
 }

@@ -3,13 +3,14 @@ package com.smartsports.nbaalarm.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by pieter on 22-9-17.
  */
 
-public class Game implements Parcelable {
+public class Game implements Parcelable, Serializable {
     private Team team_1;
     private Team team_2;
     private Date start;
