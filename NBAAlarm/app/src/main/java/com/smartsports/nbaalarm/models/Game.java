@@ -10,7 +10,7 @@ import java.util.Date;
  * Created by pieter on 22-9-17.
  */
 
-public class Game implements Parcelable, Serializable {
+public class Game implements Parcelable {
     private Team team_1;
     private Team team_2;
     private Date start;
