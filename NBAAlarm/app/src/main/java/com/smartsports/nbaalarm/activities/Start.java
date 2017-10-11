@@ -31,10 +31,6 @@ public class Start extends AppCompatActivity {
         getDataNBA(null);
     }
 
-    public void setAlarm() {
-        new Alarm(new Date(System.currentTimeMillis() + 2000), getApplicationContext());
-    }
-
     public void getDataNBA(View view) {
         if(connector != null && connector.isRunning()) {
             Button refreshButton = (Button) findViewById(R.id.asRefreshButton);

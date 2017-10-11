@@ -4,21 +4,20 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.widget.Toast;
+import android.os.Bundle;
 
 import com.smartsports.nbaalarm.receivers.AlarmReceiver;
 
 import java.util.Date;
 
-/**
- * Created by pieter on 27-9-17.
- */
-
 public class Alarm {
     private Date triggerDateTime;
 
-    public Alarm(Date triggerDateTime, Context context) {
+    private Game game;
+
+    public Alarm(Game game, Date triggerDateTime, Context context) {
         this.triggerDateTime = triggerDateTime;
+        this.game = game;
         set(context);
     }
 
@@ -31,9 +30,13 @@ public class Alarm {
 
         Intent intent = new Intent(context, AlarmReceiver.class);
 
-        intent.putExtra("message", "You have been woken up!");
+        Bundle gameBundle = new Bundle();
+        gameBundle.putParcelable("game", this.game);
 
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
+        intent.putExtra("game_bundle", gameBundle);
+        intent.setAction("com.smartsports.nbaalarm.ALARM_TRIGGER");
+
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         am.set(AlarmManager.RTC_WAKEUP, triggerDateTime.getTime(), pendingIntent);
 

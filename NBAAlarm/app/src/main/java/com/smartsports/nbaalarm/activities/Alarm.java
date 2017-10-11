@@ -5,8 +5,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.WindowManager;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.smartsports.nbaalarm.R;
+import com.smartsports.nbaalarm.models.Game;
 
 public class Alarm extends AppCompatActivity {
 
@@ -17,13 +19,14 @@ public class Alarm extends AppCompatActivity {
 
         Intent intent = getIntent();
 
-        Bundle extras = intent.getExtras();
+        Bundle gameBundle = intent.getBundleExtra("game_bundle");
+        Game game = gameBundle.getParcelable("game");
 
-        String alarm_for = extras.getString("alarm_for", "alarm_for not found!");
+        TextView tvTeam_1 = (TextView) findViewById(R.id.alarm_tv_team_1);
+        TextView tvTeam_2 = (TextView) findViewById(R.id.alarm_tv_team_2);
 
-        TextView tvAlarmFor = (TextView) findViewById(R.id.tvAlarmFor);
-
-        tvAlarmFor.setText(alarm_for);
+        tvTeam_1.setText(game != null ? game.getTeam_1() : "No game");
+        tvTeam_2.setText(game != null ? game.getTeam_2() : "No game");
     }
 
     @Override

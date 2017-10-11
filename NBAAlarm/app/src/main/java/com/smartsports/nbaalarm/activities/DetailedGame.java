@@ -42,6 +42,7 @@ public class DetailedGame extends AppCompatActivity {
         } else {
             // Set an alarm for the current game
             com.smartsports.nbaalarm.models.Alarm alarm = new Alarm(
+                    game,
                     new Date(System.currentTimeMillis()),
                     this.getApplicationContext()
             );
