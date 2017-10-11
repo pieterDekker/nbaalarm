@@ -7,9 +7,11 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.smartsports.nbaalarm.R;
-import com.smartsports.nbaalarm.models.Game;
+import com.smartsports.nbaalarm.models.*;
+import com.smartsports.nbaalarm.models.Alarm;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.TimeZone;
 
 /**
@@ -39,6 +41,10 @@ public class DetailedGame extends AppCompatActivity {
             game.setAlarm(false);
         } else {
             // Set an alarm for the current game
+            com.smartsports.nbaalarm.models.Alarm alarm = new Alarm(
+                    new Date(System.currentTimeMillis()),
+                    this.getApplicationContext()
+            );
             game.setAlarm(true);
         }
         // Confirm to the user that the alarm is set

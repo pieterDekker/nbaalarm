@@ -19,7 +19,10 @@ public class Alarm {
 
     public Alarm(Date triggerDateTime, Context context) {
         this.triggerDateTime = triggerDateTime;
+        set(context);
+    }
 
+    private void set(Context context) {
         register(context);
     }
 
