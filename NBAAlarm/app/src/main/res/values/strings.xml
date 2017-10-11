@@ -15,4 +15,5 @@
     <string name="nba_database_url">http://data.nba.net/10s/prod/v1/2017/schedule.json</string>
     <string name="alarm_wl_tag">alarm_wl_tag</string>
     <string name="dash">-</string>
+    <string name="dismiss">Dismiss</string>
 </resources>
