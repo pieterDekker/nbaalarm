@@ -10,6 +10,7 @@ import com.smartsports.nbaalarm.R;
 import com.smartsports.nbaalarm.models.Game;
 
 import java.text.SimpleDateFormat;
+import java.util.TimeZone;
 
 /**
  * Created by dejon on 9/26/2017.
@@ -53,12 +54,14 @@ public class DetailedGame extends AppCompatActivity {
 
     private void setDate() {
         SimpleDateFormat sdf = new SimpleDateFormat(getString(R.string.date_format));
+        sdf.setTimeZone(TimeZone.getTimeZone(getString(R.string.current_timezone)));
         TextView dgvDate = (TextView)findViewById(R.id.dgvDate);
         dgvDate.setText(sdf.format(game.getStart()));
     }
 
     private void setTimes() {
         SimpleDateFormat sdf = new SimpleDateFormat(getString(R.string.time_format));
+        sdf.setTimeZone(TimeZone.getTimeZone(getString(R.string.current_timezone)));
         TextView dgvStartingTime = (TextView)findViewById(R.id.dgvStartingTime);
         dgvStartingTime.setText(getString(R.string.starting_time) + " " + sdf.format(game.getStart()));
         TextView dgvEndTime = (TextView)findViewById(R.id.dgvEndTime);
