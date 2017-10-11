@@ -39,8 +39,8 @@ public class GameAdapter extends ArrayAdapter {
         TextView tvTeam_2 = (TextView) convertView.findViewById(R.id.tvTeam_2);
         TextView tvTime = (TextView) convertView.findViewById(R.id.tvTime);
         // Populate the data into the template view using the data object
-        tvTeam_1.setText(game != null ? game.getTeam_1() : "Null");
-        tvTeam_2.setText(game != null ? game.getTeam_2() : "Null");
+        tvTeam_1.setText(game != null ? game.getTeam_1().getName() : "Null");
+        tvTeam_2.setText(game != null ? game.getTeam_2().getName() : "Null");
         SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy HH:mm:ss");
         sdf.setTimeZone(TimeZone.getTimeZone("GMT+1"));
         tvTime.setText(  game != null ? sdf.format(game.getStart()) : "Null");

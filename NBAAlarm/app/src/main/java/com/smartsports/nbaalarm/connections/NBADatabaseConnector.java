@@ -1,23 +1,17 @@
 package com.smartsports.nbaalarm.connections;
 
-import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Button;
 
 import com.smartsports.nbaalarm.R;
 import com.smartsports.nbaalarm.activities.Start;
 import com.smartsports.nbaalarm.models.Game;
+import com.smartsports.nbaalarm.models.Team;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -28,67 +22,32 @@ import java.util.TimeZone;
  * Created by dejon on 10/11/2017.
  */
 
-public class NBADatabaseConnector extends AsyncTask<String, String, Void> {
-    private Start main_activity;
-    private InputStream inputStream = null;
-    private String result = "";
-    public ArrayList<Game> games = new ArrayList<>();
-    boolean running = false;
+public class NBADatabaseConnector extends DatabaseConnector {
+    private ArrayList<Game> games;
 
     public NBADatabaseConnector(Start main_activity) {
-        super();
-        this.main_activity = main_activity;
+        super(main_activity);
+        games = new ArrayList<>();
     }
 
     @Override
     protected void onPreExecute() {
-        running = true;
+        super.onPreExecute();
         Button refreshButton = (Button) main_activity.findViewById(R.id.asRefreshButton);
         refreshButton.setText("Fetching data");
     }
 
     @Override
-    protected Void doInBackground(String... params) {
-        InputStream inputStream;
-        HttpURLConnection urlConnection;
-        try {
-            URL url = new URL(params[0]);
-            urlConnection = (HttpURLConnection) url.openConnection();
-        } catch (Exception e) {
-            Log.w("Get NBA connection", e.toString());
-            return null;
-        }
-
-        try {
-            // Set up HTTP post
-            inputStream = new BufferedInputStream(urlConnection.getInputStream());
-            // Convert response to string using String Builder
-            BufferedReader bReader = new BufferedReader(new InputStreamReader(inputStream, "utf-8"), 8);
-            StringBuilder sBuilder = new StringBuilder();
-            String line = null;
-            while ((line = bReader.readLine()) != null) {
-                sBuilder.append(line + "\n");
-            }
-
-            inputStream.close();
-            result = sBuilder.toString();
-
-        } catch (Exception e) {
-            Log.w("Get NBA connection", e.toString());
-        } finally {
-            urlConnection.disconnect();
-        }
-
-        return null;
+    protected void onPostExecute(Void v) {
+        parseNBAGames();
+        main_activity.setGames(games);
+        main_activity.showGames(games);
+        super.onPostExecute(null);
     }
 
-    @Override
-    protected void onPostExecute(Void v) {
-        //parse JSON data
+    private void parseNBAGames() {
         try {
-            JSONObject data = new JSONObject(result);
-            JSONObject league = data.getJSONObject("league");
-            JSONArray leagueGames = league.getJSONArray("standard");
+            JSONArray leagueGames = new JSONObject(result).getJSONObject("league").getJSONArray("standard");
             JSONObject game;
 
             // Look for next match (based on system time)
@@ -113,12 +72,14 @@ public class NBADatabaseConnector extends AsyncTask<String, String, Void> {
                 }
             }
 
+            // Insert upcoming ? teams in games array
+            int TEAMS_IN_DATABASE = 30;
             Date startTime;
             int i = high;
-            while(((game = leagueGames.getJSONObject(i)) != null) && (i<(high+30))) {
+            while(((game = leagueGames.getJSONObject(i)) != null) && (i<(high+TEAMS_IN_DATABASE))) {
                 try {
                     startTime = sdf.parse(game.getString("startTimeUTC").replaceAll("[TZ]", ""));
-                    games.add(new Game(game.getJSONObject("hTeam").getString("teamId"), game.getJSONObject("vTeam").getString("teamId"), startTime, startTime));
+                    games.add(new Game(getTeamById(game.getJSONObject("hTeam").getString("teamId")), getTeamById(game.getJSONObject("vTeam").getString("teamId")), startTime, startTime));
                 } catch (ParseException e) {
                     Log.d("DB init", "ParseException");
                 }
@@ -127,14 +88,15 @@ public class NBADatabaseConnector extends AsyncTask<String, String, Void> {
         } catch (JSONException e) {
             Log.e("JSONException", "Error: " + e.getMessage().toString());
         } finally {
-            main_activity.showGames(null);
             Button refreshButton = (Button) main_activity.findViewById(R.id.asRefreshButton);
             refreshButton.setText("Refresh Game List");
-            running = false;
         }
     }
 
-    public boolean isRunning() {
-        return running;
+    private Team getTeamById(String id) {
+        for(Team t : main_activity.getTeams()) {
+            if(t.getId().equals(id)) return t;
+        }
+        return new Team(id, id);
     }
 }

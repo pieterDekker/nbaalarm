@@ -10,13 +10,13 @@ import java.util.Date;
  */
 
 public class Game implements Parcelable {
-    private String team_1;
-    private String team_2;
+    private Team team_1;
+    private Team team_2;
     private Date start;
     private Date end;
     private boolean alarm;
 
-    public Game(String team_1, String team_2, Date start, Date end) {
+    public Game(Team team_1, Team team_2, Date start, Date end) {
         this.team_1 = team_1;
         this.team_2 = team_2;
         this.start = start;
@@ -25,8 +25,8 @@ public class Game implements Parcelable {
     }
 
     public Game(Parcel in) {
-        this.team_1 = in.readString();
-        this.team_2 = in.readString();
+        this.team_1 = in.readParcelable(Team.class.getClassLoader());
+        this.team_2 = in.readParcelable(Team.class.getClassLoader());
         this.start = new Date(in.readLong());
         this.end = new Date(in.readLong());
         this.alarm = in.readByte() != 0;
@@ -43,8 +43,8 @@ public class Game implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel out, int flags) {
-        out.writeString(team_1);
-        out.writeString(team_2);
+        out.writeParcelable(team_1, flags);
+        out.writeParcelable(team_2, flags);
         out.writeLong(start.getTime());
         out.writeLong(end.getTime());
         out.writeByte((byte) (alarm ? 1 : 0));
@@ -60,11 +60,11 @@ public class Game implements Parcelable {
         }
     };
 
-    public String getTeam_1() {
+    public Team getTeam_1() {
         return team_1;
     }
 
-    public String getTeam_2() {
+    public Team getTeam_2() {
         return team_2;
     }
 

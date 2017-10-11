@@ -16,4 +16,5 @@
     <string name="alarm_wl_tag">alarm_wl_tag</string>
     <string name="dash">-</string>
     <string name="dismiss">Dismiss</string>
+    <string name="nba_team_database_url">http://data.nba.net/data/10s/prod/v1/2017/teams.json</string>
 </resources>

@@ -54,9 +54,9 @@ public class DetailedGame extends AppCompatActivity {
 
     private void setTeamNames() {
         TextView dgvTeam1 = (TextView) findViewById(R.id.dgvTeam1);
-        dgvTeam1.setText(game.getTeam_1());
+        dgvTeam1.setText(game.getTeam_1().getName());
         TextView dgvTeam2 = (TextView) findViewById(R.id.dgvTeam2);
-        dgvTeam2.setText(game.getTeam_2());
+        dgvTeam2.setText(game.getTeam_2().getName());
     }
 
     private void setDate() {
