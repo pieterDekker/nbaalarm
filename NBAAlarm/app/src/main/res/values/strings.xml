@@ -1,5 +1,4 @@
 <resources>
-    <string name="nba_database_url">http://data.nba.net/10s/prod/v1/2017/schedule.json</string>
     <string name="app_name">NBA Alarm</string>
     <string name="plays">plays</string>
     <string name="at">at</string>
@@ -13,4 +12,5 @@
     <string name="remove_alarm">Remove alarm for this game</string>
     <string name="set_alarm">Set alarm for this game</string>
     <string name="current_timezone">GMT+1</string>
+    <string name="nba_database_url">http://data.nba.net/10s/prod/v1/2017/schedule.json</string>
 </resources>
