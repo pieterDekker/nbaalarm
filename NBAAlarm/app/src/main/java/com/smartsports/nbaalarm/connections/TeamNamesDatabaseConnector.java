@@ -51,7 +51,6 @@ public class TeamNamesDatabaseConnector extends DatabaseConnector {
                 id = team.getString("teamId");
                 teams.add(new Team(name, id));
                 i++;
-                Log.d("Adding team", "Name: " + name + " - " + id);
             }
 
         } catch (JSONException e) {

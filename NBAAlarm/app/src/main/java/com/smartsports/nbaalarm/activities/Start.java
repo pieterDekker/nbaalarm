@@ -16,12 +16,10 @@ import com.smartsports.nbaalarm.R;
 import com.smartsports.nbaalarm.adapters.GameAdapter;
 import com.smartsports.nbaalarm.connections.NBADatabaseConnector;
 import com.smartsports.nbaalarm.connections.TeamNamesDatabaseConnector;
-import com.smartsports.nbaalarm.models.Alarm;
 import com.smartsports.nbaalarm.models.Game;
 import com.smartsports.nbaalarm.models.Team;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 public class Start extends AppCompatActivity {
     private ArrayList<Game> games;
@@ -33,12 +31,12 @@ public class Start extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         System.err.println("Start");
         setContentView(R.layout.activity_start);
-	getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+	    getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setDisplayShowCustomEnabled(true);
         getSupportActionBar().setCustomView(R.layout.custom_action_bar);
         getSupportActionBar().setTitle("");
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
-        View view =getSupportActionBar().getCustomView();
+        View view = getSupportActionBar().getCustomView();
         getDataTeams();
     }
 
@@ -71,6 +69,12 @@ public class Start extends AppCompatActivity {
                 startActivity(detailledGameIntent);
             }
         });
+    }
+
+    public void showTeams(View view) {
+        Intent teamListIntent = new Intent(getApplicationContext(), TeamList.class);
+        teamListIntent.putExtra("teams", Start.this.teams);
+        startActivity(teamListIntent);
     }
 
     public void setGames(ArrayList<Game> g) {
