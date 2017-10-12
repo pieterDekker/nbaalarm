@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="#ffff"
     android:padding="15px"
     tools:context=".activities.Start">
 
@@ -13,8 +14,12 @@
             android:id="@+id/asRefreshButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+	        android:background="@drawable/button_bkg"
             android:onClick="getDataNBA"
             android:padding="15sp"
+	        android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
             android:text="Refresh Game List" />
 
         <ListView
@@ -22,9 +27,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/activity_vertical_margin"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:layout_marginTop="@dimen/activity_vertical_margin" />
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp" />
 
 
 </LinearLayout>
