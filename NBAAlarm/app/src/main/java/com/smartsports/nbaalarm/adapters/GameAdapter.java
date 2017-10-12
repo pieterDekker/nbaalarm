@@ -42,7 +42,7 @@ public class GameAdapter extends ArrayAdapter {
         tvTeam_1.setText(game != null ? game.getTeam_1().getName() : "Null");
         tvTeam_2.setText(game != null ? game.getTeam_2().getName() : "Null");
         SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy HH:mm:ss");
-        sdf.setTimeZone(TimeZone.getTimeZone("GMT+1"));
+        sdf.setTimeZone(TimeZone.getTimeZone(getContext().getString(R.string.current_timezone)));
         tvTime.setText(  game != null ? sdf.format(game.getStart()) : "Null");
         // Return the completed view to render on screen
         return convertView;
