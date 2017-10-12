@@ -1,6 +1,9 @@
 package com.smartsports.nbaalarm.activities;
 
+import android.app.ActionBar;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -30,6 +33,12 @@ public class Start extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         System.err.println("Start");
         setContentView(R.layout.activity_start);
+	getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        getSupportActionBar().setDisplayShowCustomEnabled(true);
+        getSupportActionBar().setCustomView(R.layout.custom_action_bar);
+        getSupportActionBar().setTitle("");
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
+        View view =getSupportActionBar().getCustomView();
         getDataTeams();
     }
 
