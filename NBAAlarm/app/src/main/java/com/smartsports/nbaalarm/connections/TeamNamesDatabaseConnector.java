@@ -37,7 +37,7 @@ public class TeamNamesDatabaseConnector extends DatabaseConnector {
         parseTeamNames();
         main_activity.setTeams(teams);
         super.onPostExecute(null);
-        main_activity.getDataNBA(null);
+        main_activity.getDataNBA();
     }
 
     private void parseTeamNames() {

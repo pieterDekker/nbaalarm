@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/button_bkg"
-        android:onClick="getDataNBA"
+        android:onClick="resetFilters"
         android:padding="15sp"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"

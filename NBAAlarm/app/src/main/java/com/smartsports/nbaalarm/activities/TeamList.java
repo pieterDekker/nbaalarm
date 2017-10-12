@@ -28,7 +28,7 @@ public class TeamList extends AppCompatActivity {
         getSupportActionBar().setCustomView(R.layout.custom_action_bar);
         getSupportActionBar().setTitle("");
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
-        View view = getSupportActionBar().getCustomView();
+        getSupportActionBar().getCustomView();
 
         if(getIntent().hasExtra("teams")) {
             this.teams = (ArrayList<Team>) getIntent().getExtras().get("teams");
@@ -39,14 +39,14 @@ public class TeamList extends AppCompatActivity {
     public void showTeams(ArrayList<Team> teams) {
         TeamAdapter adapter;
         adapter = new TeamAdapter(this, teams);
-        ListView team_list = (ListView) findViewById(team_list);
+        ListView team_list = (ListView) findViewById(R.id.team_list);
         team_list.setAdapter(adapter);
         team_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int item, long position) {
-                Intent detailledGameIntent = new Intent(getApplicationContext(), DetailedGame.class);
-                detailledGameIntent.putExtra("team", TeamList.this.teams.get(item));
-                startActivity(detailledGameIntent);
+                Intent startIntent = new Intent(getApplicationContext(), Start.class);
+                startIntent.putExtra("teamfilter", TeamList.this.teams.get(item).getId());
+                startActivity(startIntent);
             }
         });
     }

@@ -23,6 +23,7 @@ import java.util.ArrayList;
 
 public class Start extends AppCompatActivity {
     private ArrayList<Game> games;
+    private String teamfilter;
     private ArrayList<Team> teams;
     NBADatabaseConnector gamesConnector;
 
@@ -37,6 +38,13 @@ public class Start extends AppCompatActivity {
         getSupportActionBar().setTitle("");
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
         View view = getSupportActionBar().getCustomView();
+
+        if(getIntent().hasExtra("teamfilter")) {
+            teamfilter = (String) getIntent().getExtras().get("teamfilter");
+        } else {
+            teamfilter = "none";
+        }
+
         getDataTeams();
     }
 
@@ -45,13 +53,13 @@ public class Start extends AppCompatActivity {
         teamCollector.execute(getString(R.string.nba_team_database_url));
     }
 
-    public void getDataNBA(View view) {
+    public void getDataNBA() {
         if(gamesConnector != null && gamesConnector.isRunning()) {
             Button refreshButton = (Button) findViewById(R.id.asRefreshButton);
             refreshButton.setText("Fetching data faster");
             return;
         }
-        gamesConnector = new NBADatabaseConnector(this);
+        gamesConnector = new NBADatabaseConnector(this, teamfilter);
         gamesConnector.execute(getString(R.string.nba_database_url));
     }
 
@@ -75,6 +83,11 @@ public class Start extends AppCompatActivity {
         Intent teamListIntent = new Intent(getApplicationContext(), TeamList.class);
         teamListIntent.putExtra("teams", Start.this.teams);
         startActivity(teamListIntent);
+    }
+
+    public void resetFilters(View view) {
+        this.teamfilter = "none";
+        this.getDataNBA();
     }
 
     public void setGames(ArrayList<Game> g) {
