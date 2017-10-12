@@ -33,10 +33,6 @@ public class Start extends AppCompatActivity {
         getDataTeams();
     }
 
-    public void setAlarm() {
-        new Alarm(new Date(System.currentTimeMillis() + 2000), getApplicationContext());
-    }
-
     private void getDataTeams() {
         TeamNamesDatabaseConnector teamCollector = new TeamNamesDatabaseConnector(this);
         teamCollector.execute(getString(R.string.nba_team_database_url));

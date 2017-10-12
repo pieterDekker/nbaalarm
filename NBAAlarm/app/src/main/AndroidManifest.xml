@@ -3,6 +3,8 @@
     package="com.smartsports.nbaalarm">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -14,11 +16,13 @@
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <receiver android:name=".receivers.AlarmReceiver"/>
-        <activity android:name=".activities.DetailedGame"></activity>
+        <activity android:name=".activities.DetailedGame" />
+        <activity android:name=".activities.Alarm" />
     </application>
 
 </manifest>
