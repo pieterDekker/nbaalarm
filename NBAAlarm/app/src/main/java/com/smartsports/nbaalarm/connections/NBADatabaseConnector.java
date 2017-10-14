@@ -24,10 +24,12 @@ import java.util.TimeZone;
 
 public class NBADatabaseConnector extends DatabaseConnector {
     private ArrayList<Game> games;
+    private String teamfilter;
 
-    public NBADatabaseConnector(Start main_activity) {
+    public NBADatabaseConnector(Start main_activity, String teamfilter) {
         super(main_activity);
         games = new ArrayList<>();
+        this.teamfilter = teamfilter;
     }
 
     @Override
@@ -72,14 +74,21 @@ public class NBADatabaseConnector extends DatabaseConnector {
                 }
             }
 
-            // Insert upcoming ? teams in games array
-            int TEAMS_IN_DATABASE = 30;
+            // Insert upcoming ? matches in games array
+            int MATCHES_IN_DATABASE = 30, MAX_SEARCHES = 100;
             Date startTime;
-            int i = high;
-            while(((game = leagueGames.getJSONObject(i)) != null) && (i<(high+TEAMS_IN_DATABASE))) {
+            int i = high, j=0;
+            String team1, team2;
+            while(((game = leagueGames.getJSONObject(i)) != null) && (i<(high+MAX_SEARCHES)) && (j<MATCHES_IN_DATABASE)) {
                 try {
                     startTime = sdf.parse(game.getString("startTimeUTC").replaceAll("[TZ]", ""));
-                    games.add(new Game(getTeamById(game.getJSONObject("hTeam").getString("teamId")), getTeamById(game.getJSONObject("vTeam").getString("teamId")), startTime, startTime));
+                    team1 = game.getJSONObject("hTeam").getString("teamId");
+                    team2 = game.getJSONObject("vTeam").getString("teamId");
+                    Log.d("NBAConn", teamfilter + " 1: " + team1 + " 2:" + team2);
+                    if(teamfilter.equals("none") || teamfilter.equals(team1) || teamfilter.equals(team2)) {
+                        games.add(new Game(getTeamById(team1), getTeamById(team2), startTime, startTime));
+                        j++;
+                    }
                 } catch (ParseException e) {
                     Log.d("DB init", "ParseException");
                 }

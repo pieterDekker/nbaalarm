@@ -16,15 +16,14 @@ import com.smartsports.nbaalarm.R;
 import com.smartsports.nbaalarm.adapters.GameAdapter;
 import com.smartsports.nbaalarm.connections.NBADatabaseConnector;
 import com.smartsports.nbaalarm.connections.TeamNamesDatabaseConnector;
-import com.smartsports.nbaalarm.models.Alarm;
 import com.smartsports.nbaalarm.models.Game;
 import com.smartsports.nbaalarm.models.Team;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 public class Start extends AppCompatActivity {
     private ArrayList<Game> games;
+    private String teamfilter;
     private ArrayList<Team> teams;
     NBADatabaseConnector gamesConnector;
 
@@ -33,12 +32,19 @@ public class Start extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         System.err.println("Start");
         setContentView(R.layout.activity_start);
-	getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+	    getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setDisplayShowCustomEnabled(true);
         getSupportActionBar().setCustomView(R.layout.custom_action_bar);
         getSupportActionBar().setTitle("");
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
-        View view =getSupportActionBar().getCustomView();
+        View view = getSupportActionBar().getCustomView();
+
+        if(getIntent().hasExtra("teamfilter")) {
+            teamfilter = (String) getIntent().getExtras().get("teamfilter");
+        } else {
+            teamfilter = "none";
+        }
+
         getDataTeams();
     }
 
@@ -47,13 +53,13 @@ public class Start extends AppCompatActivity {
         teamCollector.execute(getString(R.string.nba_team_database_url));
     }
 
-    public void getDataNBA(View view) {
+    public void getDataNBA() {
         if(gamesConnector != null && gamesConnector.isRunning()) {
             Button refreshButton = (Button) findViewById(R.id.asRefreshButton);
             refreshButton.setText("Fetching data faster");
             return;
         }
-        gamesConnector = new NBADatabaseConnector(this);
+        gamesConnector = new NBADatabaseConnector(this, teamfilter);
         gamesConnector.execute(getString(R.string.nba_database_url));
     }
 
@@ -71,6 +77,17 @@ public class Start extends AppCompatActivity {
                 startActivity(detailledGameIntent);
             }
         });
+    }
+
+    public void showTeams(View view) {
+        Intent teamListIntent = new Intent(getApplicationContext(), TeamList.class);
+        teamListIntent.putExtra("teams", Start.this.teams);
+        startActivity(teamListIntent);
+    }
+
+    public void resetFilters(View view) {
+        this.teamfilter = "none";
+        this.getDataNBA();
     }
 
     public void setGames(ArrayList<Game> g) {

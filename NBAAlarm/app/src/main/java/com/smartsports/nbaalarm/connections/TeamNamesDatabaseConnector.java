@@ -37,7 +37,7 @@ public class TeamNamesDatabaseConnector extends DatabaseConnector {
         parseTeamNames();
         main_activity.setTeams(teams);
         super.onPostExecute(null);
-        main_activity.getDataNBA(null);
+        main_activity.getDataNBA();
     }
 
     private void parseTeamNames() {
@@ -51,7 +51,6 @@ public class TeamNamesDatabaseConnector extends DatabaseConnector {
                 id = team.getString("teamId");
                 teams.add(new Team(name, id));
                 i++;
-                Log.d("Adding team", "Name: " + name + " - " + id);
             }
 
         } catch (JSONException e) {

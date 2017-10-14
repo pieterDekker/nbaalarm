@@ -10,26 +10,36 @@
     android:padding="15px"
     tools:context=".activities.Start">
 
-        <Button
-            android:id="@+id/asRefreshButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-	        android:background="@drawable/button_bkg"
-            android:onClick="getDataNBA"
-            android:padding="15sp"
-	        android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginTop="5dp"
-            android:text="Refresh Game List" />
+    <Button
+        android:id="@+id/asRefreshButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/button_bkg"
+        android:onClick="resetFilters"
+        android:padding="15sp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:text="Refresh Game List" />
 
-        <ListView
-            android:id="@+id/game_list"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/activity_vertical_margin"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginTop="5dp" />
+    <Button
+        android:id="@+id/asTeamListButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/button_bkg"
+        android:onClick="showTeams"
+        android:padding="15sp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:text="View Team List" />
 
-
+    <ListView
+        android:id="@+id/game_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp" />
 </LinearLayout>
