@@ -52,7 +52,6 @@ public class DetailedGame extends AppCompatActivity {
             // Set an alarm for the current game
             com.smartsports.nbaalarm.models.Alarm alarm = new Alarm(
                     game,
-                    new Date(System.currentTimeMillis()),
                     this.getApplicationContext()
             );
             game.setAlarm(true);
@@ -80,8 +79,6 @@ public class DetailedGame extends AppCompatActivity {
         sdf.setTimeZone(TimeZone.getTimeZone(getString(R.string.current_timezone)));
         TextView dgvStartingTime = (TextView)findViewById(R.id.dgvStartingTime);
         dgvStartingTime.setText(getString(R.string.starting_time) + " " + sdf.format(game.getStart()));
-        TextView dgvEndTime = (TextView)findViewById(R.id.dgvEndTime);
-        dgvEndTime.setText(getString(R.string.end_time) + " " + sdf.format(game.getEnd()));
     }
 
     private void setAlarmText() {

@@ -14,14 +14,12 @@ public class Game implements Parcelable, Serializable {
     private Team team_1;
     private Team team_2;
     private Date start;
-    private Date end;
     private boolean alarm;
 
-    public Game(Team team_1, Team team_2, Date start, Date end) {
+    public Game(Team team_1, Team team_2, Date start) {
         this.team_1 = team_1;
         this.team_2 = team_2;
         this.start = start;
-        this.end = end;
         this.alarm = false;
     }
 
@@ -29,7 +27,6 @@ public class Game implements Parcelable, Serializable {
         this.team_1 = in.readParcelable(Team.class.getClassLoader());
         this.team_2 = in.readParcelable(Team.class.getClassLoader());
         this.start = new Date(in.readLong());
-        this.end = new Date(in.readLong());
         this.alarm = in.readByte() != 0;
     }
 
@@ -47,7 +44,6 @@ public class Game implements Parcelable, Serializable {
         out.writeParcelable(team_1, flags);
         out.writeParcelable(team_2, flags);
         out.writeLong(start.getTime());
-        out.writeLong(end.getTime());
         out.writeByte((byte) (alarm ? 1 : 0));
     }
 
@@ -71,10 +67,6 @@ public class Game implements Parcelable, Serializable {
 
     public Date getStart() {
         return start;
-    }
-
-    public Date getEnd() {
-        return end;
     }
 
     public void setAlarm(boolean b) {

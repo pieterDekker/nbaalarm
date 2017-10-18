@@ -26,17 +26,19 @@ public class Alarm extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alarm);
-	    getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setDisplayShowCustomEnabled(true);
         getSupportActionBar().setCustomView(R.layout.custom_action_bar);
         getSupportActionBar().setTitle("");
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
-        View view =getSupportActionBar().getCustomView();
+        View view = getSupportActionBar().getCustomView();
 
         Intent intent = getIntent();
 
-        Bundle gameBundle = intent.getBundleExtra("game_bundle");
-        Game game = gameBundle.getParcelable("game");
+        Bundle gameBundle = intent.getBundleExtra("alarm_bundle");
+        com.smartsports.nbaalarm.models.Alarm alarm = gameBundle.getParcelable("alarm");
+
+        Game game = alarm.getGame();
 
         TextView tvTeam_1 = (TextView) findViewById(R.id.alarm_tv_team_1);
         TextView tvTeam_2 = (TextView) findViewById(R.id.alarm_tv_team_2);
@@ -52,6 +54,8 @@ public class Alarm extends AppCompatActivity {
         player.setLooping(true);
         player.start();
 
+        alarm.unset(this);
+        
         String alarmsFolder = getFilesDir().getAbsolutePath() + "/alarms/";
 
         File alarms = new File(alarmsFolder);

@@ -6,6 +6,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -22,32 +25,56 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 
-public class Alarm implements Serializable {
-    private Date triggerDateTime;
+public class Alarm implements Parcelable, Serializable {
 
+    @NonNull
     private Game game;
 
     private String saved_alarm;
 
-    public static String getAlarmsFolderPath(Context context) {
+    public Alarm(@NonNull Game game, Context context) {
+        this.game = game;
+        set(context);
+    }
+
+    public int describeContents() {
+        return 0;
+    }
+
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeParcelable(game, flags);
+        dest.writeString(saved_alarm);
+    }
+
+    public static final Parcelable.Creator<Alarm> CREATOR
+            = new Parcelable.Creator<Alarm>() {
+        public Alarm createFromParcel(Parcel in) {
+            return new Alarm(in);
+        }
+
+        public Alarm[] newArray(int size) {
+            return new Alarm[size];
+        }
+    };
+
+    private Alarm(Parcel in) {
+        this.game = in.readParcelable(Game.class.getClassLoader());
+        this.saved_alarm = in.readString();
+    }
+
+    private static String getAlarmsFolderPath(Context context) {
         return context.getFilesDir().getAbsolutePath() + "/alarms/";
     }
 
-    public static String getAlarmFilePath(Context context, Alarm alarm) {
+    private static String getAlarmFilePath(Context context, Alarm alarm) {
         return Uri.parse(Alarm.getAlarmsFolderPath(context) +  alarm.toString()).getPath();
     }
 
-    public File getAlarmFile(Context context) {
+    private File getAlarmFile(Context context) {
         if (this.saved_alarm == null || this.saved_alarm.equals("")) {
             return new File(Alarm.getAlarmFilePath(context, this));
         }
         return new File(this.saved_alarm);
-    }
-
-    public Alarm(Game game, Date triggerDateTime, Context context) {
-        this.triggerDateTime = triggerDateTime;
-        this.game = game;
-        set(context);
     }
 
     private void set(Context context) {
@@ -96,33 +123,32 @@ public class Alarm implements Serializable {
         return true;
     }
 
-
-
     private boolean register(Context context) {
         AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
         Intent intent = new Intent(context, AlarmReceiver.class);
 
-        Bundle gameBundle = new Bundle();
-        gameBundle.putParcelable("game", this.game);
+        Bundle alarmBundle = new Bundle();
+        alarmBundle.putParcelable("alarm", this);
 
-        intent.putExtra("game_bundle", gameBundle);
+        intent.putExtra("alarm_bundle", alarmBundle);
         intent.setAction("com.smartsports.nbaalarm.ALARM_TRIGGER");
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, this.hashCode(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        am.set(AlarmManager.RTC_WAKEUP, triggerDateTime.getTime(), pendingIntent);
+        am.set(AlarmManager.RTC_WAKEUP, this.game.getStart().getTime(), pendingIntent);
 
         return true;
     }
 
+    @NonNull
     public Game getGame() {
         return this.game;
     }
 
     @Override
     public String toString() {
-        return this.triggerDateTime.getTime() + "_" + this.game.toString();
+        return this.game.getStart().getTime() + "_" + this.game.toString();
     }
 
     @Override
