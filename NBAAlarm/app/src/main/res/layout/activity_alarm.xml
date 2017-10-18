@@ -4,33 +4,82 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/alarmview"
     tools:context="com.smartsports.nbaalarm.activities.Alarm">
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/alarm_tv_team_1"
-        />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/dash"
-        android:id="@+id/alarm_tv_dash"
-        app:layout_constraintLeft_toRightOf="@+id/alarm_tv_team_1"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/alarm_tv_team_2"
-        app:layout_constraintLeft_toRightOf="@+id/alarm_tv_dash"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/alarm_tv_time"
-        app:layout_constraintTop_toBottomOf="@+id/alarm_tv_team_1"/>
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/dismiss"
-        android:onClick="dismiss"
-        app:layout_constraintTop_toBottomOf="@id/alarm_tv_time"/>
+
+    <TableLayout
+        android:layout_width="395dp"
+        android:layout_height="587dp"
+        tools:layout_editor_absoluteY="8dp"
+        tools:layout_editor_absoluteX="8dp"
+        android:textAlignment="center">
+
+        <TableRow>
+            <TextView
+                android:layout_width="395dp"
+                android:layout_height="675px"
+                android:id="@+id/textview2"
+                android:textColor="#fff"
+                android:textSize="25dp"
+                android:visibility="invisible"/>
+        </TableRow>
+
+        <TableRow>
+            <TextView
+                android:layout_width="395dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/alarm_tv_team_1"
+                android:textColor="#fff"
+                android:layout_gravity="center"
+                android:textSize="30dp" />
+        </TableRow>
+
+        <TableRow>
+            <TextView
+                android:layout_width="395dp"
+                android:layout_height="200px"
+                android:id="@+id/textview2"
+                android:textColor="#fff"
+                android:textSize="25dp"
+                android:visibility="invisible"/>
+        </TableRow>
+
+        <TableRow>
+            <TextView
+                android:layout_width="395dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/alarm_tv_team_2"
+                android:layout_gravity="center"
+                android:textColor="#fff"
+                android:textSize="30dp" />
+        </TableRow>
+
+        <TableRow>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="200px"
+                android:id="@+id/textview2"
+                android:textColor="#fff"
+                android:textSize="25dp"
+                android:visibility="invisible"/>
+        </TableRow>
+
+        <TableRow>
+
+            <Button
+                android:id="@+id/button3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/button_black"
+                android:gravity="center"
+                android:onClick="dismiss"
+                android:text="@string/dismiss"
+                android:textAlignment="center"
+                android:textColor="#fff"
+                android:textStyle="bold" />
+        </TableRow>
+
+    </TableLayout>
 
 </android.support.constraint.ConstraintLayout>

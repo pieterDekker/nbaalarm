@@ -38,11 +38,9 @@ public class Alarm extends AppCompatActivity {
 
         TextView tvTeam_1 = (TextView) findViewById(R.id.alarm_tv_team_1);
         TextView tvTeam_2 = (TextView) findViewById(R.id.alarm_tv_team_2);
-        TextView tvTime = (TextView) findViewById(R.id.alarm_tv_time);
 
         tvTeam_1.setText(game != null ? game.getTeam_1().getName() : "No game");
         tvTeam_2.setText(game != null ? game.getTeam_2().getName() : "No game");
-        tvTime.setText(game != null ? game.getStart().toString() : "No game");
 
         Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
 

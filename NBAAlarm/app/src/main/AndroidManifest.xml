@@ -20,9 +20,21 @@
         </activity>
 
         <receiver android:name=".receivers.AlarmReceiver" />
-        <activity android:name=".activities.DetailedGame" />
+        <activity
+            android:name=".activities.DetailedGame"
+            android:parentActivityName=".activities.Start">
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value="com.smartsports.nbaalarm.activities.Start"/>
+        </activity>
         <activity android:name=".activities.Alarm" />
-        <activity android:name=".activities.TeamList" />
+        <activity
+            android:name=".activities.TeamList"
+            android:parentActivityName=".activities.Start">
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value="com.smartsports.nbaalarm.activities.Start"/>
+        </activity>
     </application>
 
 </manifest>

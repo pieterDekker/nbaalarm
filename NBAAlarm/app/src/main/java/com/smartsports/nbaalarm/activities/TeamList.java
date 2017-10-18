@@ -25,10 +25,11 @@ public class TeamList extends AppCompatActivity {
         setContentView(R.layout.activity_team_list);
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setDisplayShowCustomEnabled(true);
-        getSupportActionBar().setCustomView(R.layout.custom_action_bar);
+        getSupportActionBar().setCustomView(R.layout.custom_action_bar2);
         getSupportActionBar().setTitle("");
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
         getSupportActionBar().getCustomView();
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         if(getIntent().hasExtra("teams")) {
             this.teams = (ArrayList<Team>) getIntent().getExtras().get("teams");
