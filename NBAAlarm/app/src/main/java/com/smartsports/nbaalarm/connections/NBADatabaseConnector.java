@@ -75,16 +75,15 @@ public class NBADatabaseConnector extends DatabaseConnector {
             }
 
             // Insert upcoming ? matches in games array
-            int MATCHES_IN_DATABASE = 30, MAX_SEARCHES = 100;
+            int MATCHES_IN_DATABASE = 25;
             Date startTime;
             int i = high, j=0;
             String team1, team2;
-            while(((game = leagueGames.getJSONObject(i)) != null) && (i<(high+MAX_SEARCHES)) && (j<MATCHES_IN_DATABASE)) {
+            while(((game = leagueGames.getJSONObject(i)) != null) && (j<MATCHES_IN_DATABASE)) {
                 try {
                     startTime = sdf.parse(game.getString("startTimeUTC").replaceAll("[TZ]", ""));
                     team1 = game.getJSONObject("hTeam").getString("teamId");
                     team2 = game.getJSONObject("vTeam").getString("teamId");
-                    Log.d("NBAConn", teamfilter + " 1: " + team1 + " 2:" + team2);
                     if(teamfilter.equals("none") || teamfilter.equals(team1) || teamfilter.equals(team2)) {
                         games.add(new Game(getTeamById(team1), getTeamById(team2), startTime, startTime));
                         j++;

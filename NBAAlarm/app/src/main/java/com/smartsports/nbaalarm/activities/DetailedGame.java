@@ -1,19 +1,17 @@
 package com.smartsports.nbaalarm.activities;
 
 import android.app.ActionBar;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.smartsports.nbaalarm.R;
-import com.smartsports.nbaalarm.models.*;
 import com.smartsports.nbaalarm.models.Alarm;
+import com.smartsports.nbaalarm.models.Game;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -83,8 +81,6 @@ public class DetailedGame extends AppCompatActivity {
         sdf.setTimeZone(TimeZone.getTimeZone(getString(R.string.current_timezone)));
         TextView dgvStartingTime = (TextView)findViewById(R.id.dgvStartingTime);
         dgvStartingTime.setText(getString(R.string.starting_time) + " " + sdf.format(game.getStart()));
-        TextView dgvEndTime = (TextView)findViewById(R.id.dgvEndTime);
-        dgvEndTime.setText(getString(R.string.end_time) + " " + sdf.format(game.getEnd()));
     }
 
     private void setAlarmText() {

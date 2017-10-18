@@ -65,17 +65,6 @@
         android:textSize="16sp" />
 
     <TextView
-        android:id="@+id/dgvEndTime"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.08"
-	    android:textAlignment="center"
-        android:textColor="#000"
-        android:textStyle="bold"
-        android:text="End time: unknown"
-        android:textSize="16sp" />
-
-    <TextView
         android:id="@+id/dgvAlarmIsSet"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
