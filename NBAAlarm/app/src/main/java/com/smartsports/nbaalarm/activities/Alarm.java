@@ -17,6 +17,8 @@ import android.widget.TextView;
 import com.smartsports.nbaalarm.R;
 import com.smartsports.nbaalarm.models.Game;
 
+import java.io.File;
+
 public class Alarm extends AppCompatActivity {
     private MediaPlayer player;
 
@@ -24,7 +26,7 @@ public class Alarm extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alarm);
-	getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+	    getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setDisplayShowCustomEnabled(true);
         getSupportActionBar().setCustomView(R.layout.custom_action_bar);
         getSupportActionBar().setTitle("");
@@ -49,6 +51,20 @@ public class Alarm extends AppCompatActivity {
         player = MediaPlayer.create(this, notification);
         player.setLooping(true);
         player.start();
+
+        String alarmsFolder = getFilesDir().getAbsolutePath() + "/alarms/";
+
+        File alarms = new File(alarmsFolder);
+
+        StringBuilder list = new StringBuilder();
+        for (File f: alarms.listFiles()) {
+            list.append(f.getName());
+            list.append("\n");
+        }
+
+        TextView tvAlarmsList = (TextView) findViewById(R.id.alarms_list);
+
+        tvAlarmsList.setText(list.toString());
     }
 
     @Override
@@ -66,7 +82,12 @@ public class Alarm extends AppCompatActivity {
     }
 
     public void dismiss(View view) {
-        player.stop();
         this.finish();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        player.stop();
     }
 }

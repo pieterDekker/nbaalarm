@@ -3,11 +3,13 @@ package com.smartsports.nbaalarm.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.io.Serializable;
+
 /**
  * Created by dejon on 10/11/2017.
  */
 
-public class Team implements Parcelable {
+public class Team implements Parcelable, Serializable {
     private String name;
     private String id;
 

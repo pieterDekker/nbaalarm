@@ -10,7 +10,7 @@ import java.util.Date;
  * Created by pieter on 22-9-17.
  */
 
-public class Game implements Parcelable {
+public class Game implements Parcelable, Serializable {
     private Team team_1;
     private Team team_2;
     private Date start;
@@ -34,7 +34,7 @@ public class Game implements Parcelable {
     }
 
     public String toString() {
-        return "The " + this.team_1 + " play against the " + this.team_2 + " at " + this.start.getTime();
+        return this.team_1.getName() + "_vs_" + this.team_2.getName();
     }
 
     @Override
