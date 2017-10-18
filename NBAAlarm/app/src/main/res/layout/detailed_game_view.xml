@@ -61,7 +61,7 @@
         android:textColor="#000"
         android:textStyle="bold"
         android:layout_weight="0.08"
-        android:text="Starting time: unknown"
+        android:text="@string/start_time_unknown"
         android:textSize="16sp" />
 
     <TextView
@@ -72,7 +72,7 @@
 	    android:textAlignment="center"
         android:textColor="#000"
         android:textStyle="bold"
-        android:text="Alarm is not set"
+        android:text="@string/alarm_set"
         android:textSize="16sp" />
 
     <Button
@@ -85,7 +85,7 @@
         android:elevation="0dp"
         android:fontFamily="monospace"
         android:onClick="setAlarm"
-        android:text="Set alarm for this game"
+        android:text="@string/set_alarm"
         android:textSize="20sp"
         android:visibility="visible" />
 </LinearLayout>

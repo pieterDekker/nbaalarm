@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -26,6 +27,7 @@ public class DetailedGame extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d("DetailledGame", "Detailledgame instance created");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.detailed_game_view);
 	    getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
@@ -46,6 +48,7 @@ public class DetailedGame extends AppCompatActivity {
     }
 
     public void setAlarm(View view) {
+        Log.d("DetailledGame", "New alarm set");
         if(game.getAlarm()) {
             // Remove an alarm for the current game
             game.setAlarm(false);

@@ -30,11 +30,13 @@ public abstract class DatabaseConnector extends AsyncTask<String, String, Void> 
 
     @Override
     protected void onPreExecute() {
+        // Start gathering data, tell others to not do duplicate work
         running = true;
     }
 
     @Override
     protected Void doInBackground(String... params) {
+        Log.d("DatabaseConnector", "Start connection");
         InputStream inputStream;
         HttpURLConnection urlConnection;
         try {

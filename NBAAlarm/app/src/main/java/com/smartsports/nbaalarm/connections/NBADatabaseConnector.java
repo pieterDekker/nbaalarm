@@ -36,7 +36,7 @@ public class NBADatabaseConnector extends DatabaseConnector {
     protected void onPreExecute() {
         super.onPreExecute();
         Button refreshButton = (Button) main_activity.findViewById(R.id.asRefreshButton);
-        refreshButton.setText("Fetching data");
+        refreshButton.setText(main_activity.getString(R.string.fetching_data));
     }
 
     @Override
@@ -47,6 +47,7 @@ public class NBADatabaseConnector extends DatabaseConnector {
         super.onPostExecute(null);
     }
 
+    // Json to ArrayList<Game> parser for nba.net match list
     private void parseNBAGames() {
         try {
             JSONArray leagueGames = new JSONObject(result).getJSONObject("league").getJSONArray("standard");
@@ -74,8 +75,8 @@ public class NBADatabaseConnector extends DatabaseConnector {
                 }
             }
 
-            // Insert upcoming ? matches in games array
             int MATCHES_IN_DATABASE = 25;
+            // Insert upcoming MATCHES_IN_DATABASE matches in games array
             Date startTime;
             int i = high, j=0;
             String team1, team2;
@@ -97,13 +98,13 @@ public class NBADatabaseConnector extends DatabaseConnector {
             Log.e("JSONException", "Error: " + e.getMessage().toString());
         } finally {
             Button refreshButton = (Button) main_activity.findViewById(R.id.asRefreshButton);
-            refreshButton.setText("Refresh Game List");
+            refreshButton.setText(main_activity.getString(R.string.refresh_game_list));
         }
     }
 
     private Team getTeamById(String id) {
         for(Team t : main_activity.getTeams()) {
-            if(t.getId().equals(id)) return t;
+            if(t.equals(id)) return t;
         }
         return new Team(id, id);
     }
