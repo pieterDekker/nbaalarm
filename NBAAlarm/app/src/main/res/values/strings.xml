@@ -18,4 +18,11 @@
     <string name="dismiss">Dismiss</string>
     <string name="nba_team_database_url">http://data.nba.net/data/10s/prod/v1/2017/teams.json</string>
     <string name="title_activity_team_list">TeamList</string>
+    <string-array name="alarm_dropdown">
+        <item>On starting time</item>
+        <item>15 minutes before the match</item>
+        <item>10 minutes before the match</item>
+        <item>5 minutes before the match</item>
+        <item>In 10 seconds</item>
+    </string-array>
 </resources>
