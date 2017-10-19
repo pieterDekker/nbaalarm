@@ -7,7 +7,7 @@
     <string name="time_date_format">dd-M-yyyy HH:mm:ss</string>
     <string name="starting_time">Starting time:</string>
     <string name="end_time">End time:</string>
-    <string name="alarm_set">Alarm set for the beginning of the match</string>
+    <string name="alarm_set">Alarm set</string>
     <string name="alarm_not_set">Alarm not set</string>
     <string name="remove_alarm">Remove alarm for this game</string>
     <string name="set_alarm">Set alarm for this game</string>
