@@ -42,7 +42,10 @@ public class NBADatabaseConnector extends DatabaseConnector {
     @Override
     protected void onPostExecute(Void v) {
         parseNBAGames();
+        //TODO remove test statements
+//        this.games.add(new Game(new Team("testteam", "0"), new Team("Testteam2", "0"), new Date(System.currentTimeMillis() + 80000)));
         main_activity.setGames(games);
+
         main_activity.showGames(games);
         super.onPostExecute(null);
     }
@@ -86,7 +89,7 @@ public class NBADatabaseConnector extends DatabaseConnector {
                     team1 = game.getJSONObject("hTeam").getString("teamId");
                     team2 = game.getJSONObject("vTeam").getString("teamId");
                     if(teamfilter.equals("none") || teamfilter.equals(team1) || teamfilter.equals(team2)) {
-                        games.add(new Game(getTeamById(team1), getTeamById(team2), startTime, startTime));
+                        games.add(new Game(getTeamById(team1), getTeamById(team2), startTime));
                         j++;
                     }
                 } catch (ParseException e) {

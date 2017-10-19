@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -30,7 +31,6 @@ public class Start extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        System.err.println("Start");
         setContentView(R.layout.activity_start);
 	    makeActionBar();
 
@@ -67,9 +67,8 @@ public class Start extends AppCompatActivity {
         game_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int item, long position) {
-                Log.d("Main Activity","Team " +  Start.this.games.get(item).getTeam_1() + " vs " + Start.this.games.get(item).getTeam_2() );
                 Intent detailledGameIntent = new Intent(getApplicationContext(), DetailedGame.class);
-                detailledGameIntent.putExtra("game", Start.this.games.get(item));
+                detailledGameIntent.putExtra("game", (Parcelable) Start.this.games.get(item));
                 startActivity(detailledGameIntent);
             }
         });

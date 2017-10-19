@@ -16,6 +16,8 @@ import android.widget.TextView;
 import com.smartsports.nbaalarm.R;
 import com.smartsports.nbaalarm.models.Game;
 
+import java.io.File;
+
 public class Alarm extends AppCompatActivity {
     private MediaPlayer player;
 
@@ -27,8 +29,10 @@ public class Alarm extends AppCompatActivity {
 
         Intent intent = getIntent();
 
-        Bundle gameBundle = intent.getBundleExtra("game_bundle");
-        Game game = gameBundle.getParcelable("game");
+        Bundle gameBundle = intent.getBundleExtra("alarm_bundle");
+        com.smartsports.nbaalarm.models.Alarm alarm = gameBundle.getParcelable("alarm");
+
+        Game game = alarm.getGame();
 
         TextView tvTeam_1 = (TextView) findViewById(R.id.alarm_tv_team_1);
         TextView tvTeam_2 = (TextView) findViewById(R.id.alarm_tv_team_2);
@@ -41,6 +45,8 @@ public class Alarm extends AppCompatActivity {
         player = MediaPlayer.create(this, notification);
         player.setLooping(true);
         player.start();
+
+        alarm.unset(this);
     }
 
     @Override
@@ -58,8 +64,13 @@ public class Alarm extends AppCompatActivity {
     }
 
     public void dismiss(View view) {
-        player.stop();
         this.finish();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        player.stop();
     }
 
     public View makeActionBar() {

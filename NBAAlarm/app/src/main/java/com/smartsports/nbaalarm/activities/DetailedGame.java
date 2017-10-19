@@ -15,7 +15,6 @@ import com.smartsports.nbaalarm.models.Alarm;
 import com.smartsports.nbaalarm.models.Game;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.TimeZone;
 
 /**
@@ -27,7 +26,6 @@ public class DetailedGame extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d("DetailledGame", "Detailledgame instance created");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.detailed_game_view);
 	    getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
@@ -48,18 +46,12 @@ public class DetailedGame extends AppCompatActivity {
     }
 
     public void setAlarm(View view) {
-        Log.d("DetailledGame", "New alarm set");
-        if(game.getAlarm()) {
+        if(!game.isAlarmSet(this.getApplicationContext())) {
             // Remove an alarm for the current game
-            game.setAlarm(false);
+            game.setAlarm(this.getApplicationContext());
         } else {
             // Set an alarm for the current game
-            com.smartsports.nbaalarm.models.Alarm alarm = new Alarm(
-                    game,
-                    new Date(System.currentTimeMillis()),
-                    this.getApplicationContext()
-            );
-            game.setAlarm(true);
+            game.unsetAlarm(this.getApplicationContext());
         }
         // Confirm to the user that the alarm is set
         this.setAlarmText();
@@ -90,7 +82,7 @@ public class DetailedGame extends AppCompatActivity {
         // Set alarm text
         TextView dgvAlarmIsSet = (TextView) findViewById(R.id.dgvAlarmIsSet);
         Button dgvSetAlarmButton = (Button) findViewById(R.id.dgvSetAlarmButton);
-        if(game.getAlarm()) {
+        if(game.isAlarmSet(this.getApplicationContext())) {
             dgvAlarmIsSet.setText(getString(R.string.alarm_set));
             dgvSetAlarmButton.setText(getString(R.string.remove_alarm));
         } else {
