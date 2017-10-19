@@ -1,19 +1,18 @@
 package com.smartsports.nbaalarm.activities;
 
 import android.app.ActionBar;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.MenuItem;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.smartsports.nbaalarm.R;
-import com.smartsports.nbaalarm.models.*;
 import com.smartsports.nbaalarm.models.Alarm;
+import com.smartsports.nbaalarm.models.Game;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -28,6 +27,7 @@ public class DetailedGame extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d("DetailledGame", "Detailledgame instance created");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.detailed_game_view);
 	    getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
@@ -48,6 +48,7 @@ public class DetailedGame extends AppCompatActivity {
     }
 
     public void setAlarm(View view) {
+        Log.d("DetailledGame", "New alarm set");
         if(game.getAlarm()) {
             // Remove an alarm for the current game
             game.setAlarm(false);
@@ -83,8 +84,6 @@ public class DetailedGame extends AppCompatActivity {
         sdf.setTimeZone(TimeZone.getTimeZone(getString(R.string.current_timezone)));
         TextView dgvStartingTime = (TextView)findViewById(R.id.dgvStartingTime);
         dgvStartingTime.setText(getString(R.string.starting_time) + " " + sdf.format(game.getStart()));
-        TextView dgvEndTime = (TextView)findViewById(R.id.dgvEndTime);
-        dgvEndTime.setText(getString(R.string.end_time) + " " + sdf.format(game.getEnd()));
     }
 
     private void setAlarmText() {

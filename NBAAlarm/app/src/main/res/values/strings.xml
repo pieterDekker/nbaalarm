@@ -18,4 +18,9 @@
     <string name="dismiss">Dismiss</string>
     <string name="nba_team_database_url">http://data.nba.net/data/10s/prod/v1/2017/teams.json</string>
     <string name="title_activity_team_list">TeamList</string>
+    <string name="refresh_game_list">refresh game list</string>
+    <string name="fetching_data">Fetching data</string>
+    <string name="fetching_data_ee">fetching data faster</string>
+    <string name="filter_games_team">Filter games by team</string>
+    <string name="start_time_unknown">Starting time: unknown</string>
 </resources>
