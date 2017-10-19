@@ -30,11 +30,12 @@ public class Alarm implements Parcelable, Serializable {
 
     @NonNull
     private Game game;
-
+    private Long time;
     private String saved_alarm;
 
-    public Alarm(@NonNull Game game, Context context) {
+    public Alarm(@NonNull Game game, Context context, Long time) {
         this.game = game;
+        this.time = time;
         set(context);
     }
 
@@ -157,7 +158,7 @@ public class Alarm implements Parcelable, Serializable {
         intent.setAction("com.smartsports.nbaalarm.ALARM_TRIGGER");
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, this.hashCode(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        am.set(AlarmManager.RTC_WAKEUP, this.game.getStart().getTime(), pendingIntent);
+        am.set(AlarmManager.RTC_WAKEUP, this.time, pendingIntent);
 
         return true;
     }

@@ -1,15 +1,9 @@
 package com.smartsports.nbaalarm.models;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
-import android.widget.TextView;
 
-import com.smartsports.nbaalarm.R;
-
-import java.io.File;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -76,8 +70,12 @@ public class Game implements Parcelable, Serializable {
     }
 
     public void setAlarm(Context context) {
+        this.setAlarm(context, this.start.getTime());
+    }
+
+    public void setAlarm(Context context, Long time) {
         this.alarmSet = true;
-        new Alarm(this, context);
+        new Alarm(this, context, time);
     }
 
     public boolean isAlarmSet(Context context) {
@@ -87,6 +85,6 @@ public class Game implements Parcelable, Serializable {
     public void unsetAlarm(Context context) {
         this.alarmSet = false;
 
-        (new Alarm(this, context)).unset(context);
+        (new Alarm(this, context, null)).unset(context);
     }
 }

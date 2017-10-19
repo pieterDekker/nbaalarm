@@ -8,10 +8,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.smartsports.nbaalarm.R;
-import com.smartsports.nbaalarm.models.Alarm;
 import com.smartsports.nbaalarm.models.Game;
 
 import java.text.SimpleDateFormat;
@@ -48,7 +48,22 @@ public class DetailedGame extends AppCompatActivity {
     public void setAlarm(View view) {
         if(!game.isAlarmSet(this.getApplicationContext())) {
             // Remove an alarm for the current game
-            game.setAlarm(this.getApplicationContext());
+            String timeOffset = ((Spinner) findViewById(R.id.dgvAlarmOffset)).getSelectedItem().toString();
+            Log.d("DetailedGame", timeOffset);
+            Long time;
+            if(timeOffset.equals(getString(R.string.alarm_dropdown_0))) {
+                game.setAlarm(this.getApplicationContext(), game.getStart().getTime());
+            } else if (timeOffset.equals(getString(R.string.alarm_dropdown_0_10))) {
+                game.setAlarm(this.getApplicationContext(), System.currentTimeMillis()+(10*1000));
+            } else if (timeOffset.equals(getString(R.string.alarm_dropdown_15))) {
+                game.setAlarm(this.getApplicationContext(), game.getStart().getTime()-(15*60*1000));
+            } else if (timeOffset.equals(getString(R.string.alarm_dropdown_10))) {
+                game.setAlarm(this.getApplicationContext(), game.getStart().getTime()-(10*60*1000));
+            } else if (timeOffset.equals(getString(R.string.alarm_dropdown_5))) {
+                game.setAlarm(this.getApplicationContext(), game.getStart().getTime()-(5*60*1000));
+            } else {
+                game.setAlarm(this.getApplicationContext());
+            }
         } else {
             // Set an alarm for the current game
             game.unsetAlarm(this.getApplicationContext());
@@ -82,10 +97,13 @@ public class DetailedGame extends AppCompatActivity {
         // Set alarm text
         TextView dgvAlarmIsSet = (TextView) findViewById(R.id.dgvAlarmIsSet);
         Button dgvSetAlarmButton = (Button) findViewById(R.id.dgvSetAlarmButton);
+        Spinner dgvAlarmOffset = (Spinner) findViewById(R.id.dgvAlarmOffset);
         if(game.isAlarmSet(this.getApplicationContext())) {
+            dgvAlarmOffset.setVisibility(View.INVISIBLE);
             dgvAlarmIsSet.setText(getString(R.string.alarm_set));
             dgvSetAlarmButton.setText(getString(R.string.remove_alarm));
         } else {
+            dgvAlarmOffset.setVisibility(View.VISIBLE);
             dgvAlarmIsSet.setText(getString(R.string.alarm_not_set));
             dgvSetAlarmButton.setText(getString(R.string.set_alarm));
         }

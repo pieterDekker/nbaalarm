@@ -7,7 +7,7 @@
     <string name="time_date_format">dd-M-yyyy HH:mm:ss</string>
     <string name="starting_time">Starting time:</string>
     <string name="end_time">End time:</string>
-    <string name="alarm_set">Alarm set for the beginning of the match</string>
+    <string name="alarm_set">Alarm set</string>
     <string name="alarm_not_set">Alarm not set</string>
     <string name="remove_alarm">Remove alarm for this game</string>
     <string name="set_alarm">Set alarm for this game</string>
@@ -18,6 +18,18 @@
     <string name="dismiss">Dismiss</string>
     <string name="nba_team_database_url">http://data.nba.net/data/10s/prod/v1/2017/teams.json</string>
     <string name="title_activity_team_list">TeamList</string>
+    <string name="alarm_dropdown_0">On starting time</string>
+    <string name="alarm_dropdown_15">15 minutes before the match</string>
+    <string name="alarm_dropdown_10">10 minutes before the match</string>
+    <string name="alarm_dropdown_5">5 minutes before the match</string>
+    <string name="alarm_dropdown_0.10">In 10 seconds</string>
+    <string-array name="alarm_dropdown">
+        <item>@string/alarm_dropdown_0</item>
+        <item>@string/alarm_dropdown_15</item>
+        <item>@string/alarm_dropdown_10</item>
+        <item>@string/alarm_dropdown_5</item>
+        <item>@string/alarm_dropdown_0.10</item>
+    </string-array>
     <string name="refresh_game_list">refresh game list</string>
     <string name="fetching_data">Fetching data</string>
     <string name="fetching_data_ee">fetching data faster</string>
