@@ -5,17 +5,18 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
-import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.smartsports.nbaalarm.R;
 import com.smartsports.nbaalarm.models.Game;
+
+import java.io.File;
 
 public class Alarm extends AppCompatActivity {
     private MediaPlayer player;
@@ -24,17 +25,14 @@ public class Alarm extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alarm);
-	getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        getSupportActionBar().setDisplayShowCustomEnabled(true);
-        getSupportActionBar().setCustomView(R.layout.custom_action_bar);
-        getSupportActionBar().setTitle("");
-        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
-        View view =getSupportActionBar().getCustomView();
+        makeActionBar();
 
         Intent intent = getIntent();
 
-        Bundle gameBundle = intent.getBundleExtra("game_bundle");
-        Game game = gameBundle.getParcelable("game");
+        Bundle gameBundle = intent.getBundleExtra("alarm_bundle");
+        com.smartsports.nbaalarm.models.Alarm alarm = gameBundle.getParcelable("alarm");
+
+        Game game = alarm.getGame();
 
         TextView tvTeam_1 = (TextView) findViewById(R.id.alarm_tv_team_1);
         TextView tvTeam_2 = (TextView) findViewById(R.id.alarm_tv_team_2);
@@ -47,6 +45,8 @@ public class Alarm extends AppCompatActivity {
         player = MediaPlayer.create(this, notification);
         player.setLooping(true);
         player.start();
+
+        alarm.unset(this);
     }
 
     @Override
@@ -64,7 +64,21 @@ public class Alarm extends AppCompatActivity {
     }
 
     public void dismiss(View view) {
-        player.stop();
         this.finish();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        player.stop();
+    }
+
+    public View makeActionBar() {
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        getSupportActionBar().setDisplayShowCustomEnabled(true);
+        getSupportActionBar().setCustomView(R.layout.custom_action_bar);
+        getSupportActionBar().setTitle("");
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
+        return getSupportActionBar().getCustomView();
     }
 }

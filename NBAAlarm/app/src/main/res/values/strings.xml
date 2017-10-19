@@ -18,11 +18,21 @@
     <string name="dismiss">Dismiss</string>
     <string name="nba_team_database_url">http://data.nba.net/data/10s/prod/v1/2017/teams.json</string>
     <string name="title_activity_team_list">TeamList</string>
+    <string name="alarm_dropdown_0">On starting time</string>
+    <string name="alarm_dropdown_15">15 minutes before the match</string>
+    <string name="alarm_dropdown_10">10 minutes before the match</string>
+    <string name="alarm_dropdown_5">5 minutes before the match</string>
+    <string name="alarm_dropdown_0.10">In 10 seconds</string>
     <string-array name="alarm_dropdown">
-        <item>On starting time</item>
-        <item>15 minutes before the match</item>
-        <item>10 minutes before the match</item>
-        <item>5 minutes before the match</item>
-        <item>In 10 seconds</item>
+        <item>@string/alarm_dropdown_0</item>
+        <item>@string/alarm_dropdown_15</item>
+        <item>@string/alarm_dropdown_10</item>
+        <item>@string/alarm_dropdown_5</item>
+        <item>@string/alarm_dropdown_0.10</item>
     </string-array>
+    <string name="refresh_game_list">refresh game list</string>
+    <string name="fetching_data">Fetching data</string>
+    <string name="fetching_data_ee">fetching data faster</string>
+    <string name="filter_games_team">Filter games by team</string>
+    <string name="start_time_unknown">Starting time: unknown</string>
 </resources>

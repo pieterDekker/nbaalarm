@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -30,15 +31,10 @@ public class Start extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        System.err.println("Start");
         setContentView(R.layout.activity_start);
-	    getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        getSupportActionBar().setDisplayShowCustomEnabled(true);
-        getSupportActionBar().setCustomView(R.layout.custom_action_bar);
-        getSupportActionBar().setTitle("");
-        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
-        View view = getSupportActionBar().getCustomView();
+	    makeActionBar();
 
+        // Look for filters in the intent
         if(getIntent().hasExtra("teamfilter")) {
             teamfilter = (String) getIntent().getExtras().get("teamfilter");
         } else {
@@ -56,7 +52,7 @@ public class Start extends AppCompatActivity {
     public void getDataNBA() {
         if(gamesConnector != null && gamesConnector.isRunning()) {
             Button refreshButton = (Button) findViewById(R.id.asRefreshButton);
-            refreshButton.setText("Fetching data faster");
+            refreshButton.setText(getString(R.string.fetching_data_ee));
             return;
         }
         gamesConnector = new NBADatabaseConnector(this, teamfilter);
@@ -71,9 +67,8 @@ public class Start extends AppCompatActivity {
         game_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int item, long position) {
-                Log.d("Main Activity","Team " +  Start.this.games.get(item).getTeam_1() + " vs " + Start.this.games.get(item).getTeam_2() );
                 Intent detailledGameIntent = new Intent(getApplicationContext(), DetailedGame.class);
-                detailledGameIntent.putExtra("game", Start.this.games.get(item));
+                detailledGameIntent.putExtra("game", (Parcelable) Start.this.games.get(item));
                 startActivity(detailledGameIntent);
             }
         });
@@ -86,8 +81,18 @@ public class Start extends AppCompatActivity {
     }
 
     public void resetFilters(View view) {
+        // Reset all filters so the main game list shows the upcoming MATCHES_IN_GAMELIST unfiltered games
         this.teamfilter = "none";
         this.getDataNBA();
+    }
+
+    public View makeActionBar() {
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        getSupportActionBar().setDisplayShowCustomEnabled(true);
+        getSupportActionBar().setCustomView(R.layout.custom_action_bar);
+        getSupportActionBar().setTitle("");
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
+        return getSupportActionBar().getCustomView();
     }
 
     public void setGames(ArrayList<Game> g) {

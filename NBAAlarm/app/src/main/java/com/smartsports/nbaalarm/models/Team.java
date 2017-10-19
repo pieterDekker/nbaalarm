@@ -3,11 +3,13 @@ package com.smartsports.nbaalarm.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.io.Serializable;
+
 /**
  * Created by dejon on 10/11/2017.
  */
 
-public class Team implements Parcelable {
+public class Team implements Parcelable, Serializable {
     private String name;
     private String id;
 
@@ -41,6 +43,14 @@ public class Team implements Parcelable {
             return new Team[size];
         }
     };
+
+    public boolean equals(Team t) {
+        return t.name.equals(this.name) && t.id.equals(this.id);
+    }
+
+    public boolean equals(String s) {
+        return s.equals(this.id) || s.equals(this.name);
+    }
 
     public String getName() {
         return name;

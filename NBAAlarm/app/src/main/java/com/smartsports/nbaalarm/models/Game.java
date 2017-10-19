@@ -1,5 +1,6 @@
 package com.smartsports.nbaalarm.models;
 
+import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -10,31 +11,27 @@ import java.util.Date;
  * Created by pieter on 22-9-17.
  */
 
-public class Game implements Parcelable {
+public class Game implements Parcelable, Serializable {
     private Team team_1;
     private Team team_2;
     private Date start;
-    private Date end;
-    private boolean alarm;
+    private boolean alarmSet;
 
-    public Game(Team team_1, Team team_2, Date start, Date end) {
+    public Game(Team team_1, Team team_2, Date start) {
         this.team_1 = team_1;
         this.team_2 = team_2;
         this.start = start;
-        this.end = end;
-        this.alarm = false;
     }
 
-    public Game(Parcel in) {
+    private Game(Parcel in) {
         this.team_1 = in.readParcelable(Team.class.getClassLoader());
         this.team_2 = in.readParcelable(Team.class.getClassLoader());
         this.start = new Date(in.readLong());
-        this.end = new Date(in.readLong());
-        this.alarm = in.readByte() != 0;
+        this.alarmSet = in.readByte() != 0;
     }
 
     public String toString() {
-        return "The " + this.team_1 + " play against the " + this.team_2 + " at " + this.start.getTime();
+        return this.team_1.getName() + "_vs_" + this.team_2.getName();
     }
 
     @Override
@@ -47,8 +44,7 @@ public class Game implements Parcelable {
         out.writeParcelable(team_1, flags);
         out.writeParcelable(team_2, flags);
         out.writeLong(start.getTime());
-        out.writeLong(end.getTime());
-        out.writeByte((byte) (alarm ? 1 : 0));
+        out.writeByte((byte) (alarmSet ? 1 : 0));
     }
 
     public static final Parcelable.Creator<Game> CREATOR = new Parcelable.Creator<Game>() {
@@ -73,15 +69,22 @@ public class Game implements Parcelable {
         return start;
     }
 
-    public Date getEnd() {
-        return end;
+    public void setAlarm(Context context) {
+        this.setAlarm(context, this.start.getTime());
     }
 
-    public void setAlarm(boolean b) {
-        this.alarm = b;
+    public void setAlarm(Context context, Long time) {
+        this.alarmSet = true;
+        new Alarm(this, context, time);
     }
 
-    public boolean getAlarm() {
-        return this.alarm;
+    public boolean isAlarmSet(Context context) {
+        return Alarm.isSet(this, context);
+    }
+
+    public void unsetAlarm(Context context) {
+        this.alarmSet = false;
+
+        (new Alarm(this, context, null)).unset(context);
     }
 }

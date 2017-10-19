@@ -1,22 +1,20 @@
 package com.smartsports.nbaalarm.activities;
 
 import android.app.ActionBar;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.MenuItem;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.smartsports.nbaalarm.R;
-import com.smartsports.nbaalarm.models.*;
-import com.smartsports.nbaalarm.models.Alarm;
+import com.smartsports.nbaalarm.models.Game;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.TimeZone;
 
 /**
@@ -48,17 +46,27 @@ public class DetailedGame extends AppCompatActivity {
     }
 
     public void setAlarm(View view) {
-        if(game.getAlarm()) {
+        if(!game.isAlarmSet(this.getApplicationContext())) {
             // Remove an alarm for the current game
-            game.setAlarm(false);
+            String timeOffset = ((Spinner) findViewById(R.id.dgvAlarmOffset)).getSelectedItem().toString();
+            Log.d("DetailedGame", timeOffset);
+            Long time;
+            if(timeOffset.equals(getString(R.string.alarm_dropdown_0))) {
+                game.setAlarm(this.getApplicationContext(), game.getStart().getTime());
+            } else if (timeOffset.equals(getString(R.string.alarm_dropdown_0_10))) {
+                game.setAlarm(this.getApplicationContext(), System.currentTimeMillis()+(10*1000));
+            } else if (timeOffset.equals(getString(R.string.alarm_dropdown_15))) {
+                game.setAlarm(this.getApplicationContext(), game.getStart().getTime()-(15*60*1000));
+            } else if (timeOffset.equals(getString(R.string.alarm_dropdown_10))) {
+                game.setAlarm(this.getApplicationContext(), game.getStart().getTime()-(10*60*1000));
+            } else if (timeOffset.equals(getString(R.string.alarm_dropdown_5))) {
+                game.setAlarm(this.getApplicationContext(), game.getStart().getTime()-(5*60*1000));
+            } else {
+                game.setAlarm(this.getApplicationContext());
+            }
         } else {
             // Set an alarm for the current game
-            com.smartsports.nbaalarm.models.Alarm alarm = new Alarm(
-                    game,
-                    new Date(System.currentTimeMillis()),
-                    this.getApplicationContext()
-            );
-            game.setAlarm(true);
+            game.unsetAlarm(this.getApplicationContext());
         }
         // Confirm to the user that the alarm is set
         this.setAlarmText();
@@ -83,18 +91,19 @@ public class DetailedGame extends AppCompatActivity {
         sdf.setTimeZone(TimeZone.getTimeZone(getString(R.string.current_timezone)));
         TextView dgvStartingTime = (TextView)findViewById(R.id.dgvStartingTime);
         dgvStartingTime.setText(getString(R.string.starting_time) + " " + sdf.format(game.getStart()));
-        TextView dgvEndTime = (TextView)findViewById(R.id.dgvEndTime);
-        dgvEndTime.setText(getString(R.string.end_time) + " " + sdf.format(game.getEnd()));
     }
 
     private void setAlarmText() {
         // Set alarm text
         TextView dgvAlarmIsSet = (TextView) findViewById(R.id.dgvAlarmIsSet);
         Button dgvSetAlarmButton = (Button) findViewById(R.id.dgvSetAlarmButton);
-        if(game.getAlarm()) {
+        Spinner dgvAlarmOffset = (Spinner) findViewById(R.id.dgvAlarmOffset);
+        if(game.isAlarmSet(this.getApplicationContext())) {
+            dgvAlarmOffset.setVisibility(View.INVISIBLE);
             dgvAlarmIsSet.setText(getString(R.string.alarm_set));
             dgvSetAlarmButton.setText(getString(R.string.remove_alarm));
         } else {
+            dgvAlarmOffset.setVisibility(View.VISIBLE);
             dgvAlarmIsSet.setText(getString(R.string.alarm_not_set));
             dgvSetAlarmButton.setText(getString(R.string.set_alarm));
         }

@@ -40,6 +40,7 @@ public class TeamNamesDatabaseConnector extends DatabaseConnector {
         main_activity.getDataNBA();
     }
 
+    // Json to ArrayList<Team> parser for nba.net team list
     private void parseTeamNames() {
         try {
             JSONArray jTeams = new JSONObject(result).getJSONObject("league").getJSONArray("standard");
