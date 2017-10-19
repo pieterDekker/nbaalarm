@@ -1,8 +1,15 @@
 package com.smartsports.nbaalarm.models;
 
+import android.content.Context;
+import android.content.res.Resources;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
+import android.widget.TextView;
 
+import com.smartsports.nbaalarm.R;
+
+import java.io.File;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -14,20 +21,19 @@ public class Game implements Parcelable, Serializable {
     private Team team_1;
     private Team team_2;
     private Date start;
-    private boolean alarm;
+    private boolean alarmSet;
 
     public Game(Team team_1, Team team_2, Date start) {
         this.team_1 = team_1;
         this.team_2 = team_2;
         this.start = start;
-        this.alarm = false;
     }
 
-    public Game(Parcel in) {
+    private Game(Parcel in) {
         this.team_1 = in.readParcelable(Team.class.getClassLoader());
         this.team_2 = in.readParcelable(Team.class.getClassLoader());
         this.start = new Date(in.readLong());
-        this.alarm = in.readByte() != 0;
+        this.alarmSet = in.readByte() != 0;
     }
 
     public String toString() {
@@ -44,7 +50,7 @@ public class Game implements Parcelable, Serializable {
         out.writeParcelable(team_1, flags);
         out.writeParcelable(team_2, flags);
         out.writeLong(start.getTime());
-        out.writeByte((byte) (alarm ? 1 : 0));
+        out.writeByte((byte) (alarmSet ? 1 : 0));
     }
 
     public static final Parcelable.Creator<Game> CREATOR = new Parcelable.Creator<Game>() {
@@ -69,11 +75,18 @@ public class Game implements Parcelable, Serializable {
         return start;
     }
 
-    public void setAlarm(boolean b) {
-        this.alarm = b;
+    public void setAlarm(Context context) {
+        this.alarmSet = true;
+        new Alarm(this, context);
     }
 
-    public boolean getAlarm() {
-        return this.alarm;
+    public boolean isAlarmSet(Context context) {
+        return Alarm.isSet(this, context);
+    }
+
+    public void unsetAlarm(Context context) {
+        this.alarmSet = false;
+
+        (new Alarm(this, context)).unset(context);
     }
 }

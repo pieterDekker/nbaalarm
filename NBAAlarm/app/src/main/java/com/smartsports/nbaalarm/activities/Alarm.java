@@ -55,20 +55,6 @@ public class Alarm extends AppCompatActivity {
         player.start();
 
         alarm.unset(this);
-        
-        String alarmsFolder = getFilesDir().getAbsolutePath() + "/alarms/";
-
-        File alarms = new File(alarmsFolder);
-
-        StringBuilder list = new StringBuilder();
-        for (File f: alarms.listFiles()) {
-            list.append(f.getName());
-            list.append("\n");
-        }
-
-        TextView tvAlarmsList = (TextView) findViewById(R.id.alarms_list);
-
-        tvAlarmsList.setText(list.toString());
     }
 
     @Override

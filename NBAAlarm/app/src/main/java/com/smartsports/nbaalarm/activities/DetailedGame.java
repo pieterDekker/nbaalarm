@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -14,7 +15,6 @@ import com.smartsports.nbaalarm.models.*;
 import com.smartsports.nbaalarm.models.Alarm;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.TimeZone;
 
 /**
@@ -45,16 +45,13 @@ public class DetailedGame extends AppCompatActivity {
     }
 
     public void setAlarm(View view) {
-        if(game.getAlarm()) {
+        Log.i("Alarmas", "attempt to set alarm");
+        if(!game.isAlarmSet(this.getApplicationContext())) {
             // Remove an alarm for the current game
-            game.setAlarm(false);
+            game.setAlarm(this.getApplicationContext());
         } else {
             // Set an alarm for the current game
-            com.smartsports.nbaalarm.models.Alarm alarm = new Alarm(
-                    game,
-                    this.getApplicationContext()
-            );
-            game.setAlarm(true);
+            game.unsetAlarm(this.getApplicationContext());
         }
         // Confirm to the user that the alarm is set
         this.setAlarmText();
@@ -85,7 +82,7 @@ public class DetailedGame extends AppCompatActivity {
         // Set alarm text
         TextView dgvAlarmIsSet = (TextView) findViewById(R.id.dgvAlarmIsSet);
         Button dgvSetAlarmButton = (Button) findViewById(R.id.dgvSetAlarmButton);
-        if(game.getAlarm()) {
+        if(game.isAlarmSet(this.getApplicationContext())) {
             dgvAlarmIsSet.setText(getString(R.string.alarm_set));
             dgvSetAlarmButton.setText(getString(R.string.remove_alarm));
         } else {

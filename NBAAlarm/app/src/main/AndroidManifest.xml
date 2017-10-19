@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 
     <application
         android:allowBackup="true"
@@ -19,7 +20,17 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".receivers.AlarmReceiver" />
+        <receiver android:name=".receivers.AlarmReceiver">
+            <intent-filter>
+                <action android:name="com.smartsports.nbaalarm.ALARM_TRIGGER"/>
+            </intent-filter>
+        </receiver>
+        <receiver android:name=".receivers.BootReceiver" android:enabled="true" android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </receiver>
         <activity android:name=".activities.DetailedGame" />
         <activity android:name=".activities.Alarm" />
         <activity android:name=".activities.TeamList" />

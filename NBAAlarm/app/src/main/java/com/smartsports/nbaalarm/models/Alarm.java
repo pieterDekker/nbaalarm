@@ -15,15 +15,16 @@ import android.widget.Toast;
 import com.smartsports.nbaalarm.receivers.AlarmReceiver;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Date;
 
 public class Alarm implements Parcelable, Serializable {
 
@@ -66,15 +67,16 @@ public class Alarm implements Parcelable, Serializable {
         return context.getFilesDir().getAbsolutePath() + "/alarms/";
     }
 
-    private static String getAlarmFilePath(Context context, Alarm alarm) {
-        return Uri.parse(Alarm.getAlarmsFolderPath(context) +  alarm.toString()).getPath();
+    private static String getAlarmFilePath(Context context, Game game) {
+        return Uri.parse(Alarm.getAlarmsFolderPath(context) +  Alarm.getAlarmFileName(game)).getPath();
+    }
+
+    private static String getAlarmFileName(Game game) {
+        return game.getStart().getTime() + "_" + game.toString();
     }
 
     private File getAlarmFile(Context context) {
-        if (this.saved_alarm == null || this.saved_alarm.equals("")) {
-            return new File(Alarm.getAlarmFilePath(context, this));
-        }
-        return new File(this.saved_alarm);
+        return new File(Alarm.getAlarmFilePath(context, this.game));
     }
 
     private void set(Context context) {
@@ -84,46 +86,66 @@ public class Alarm implements Parcelable, Serializable {
 
     public void unset(Context context) {
         this.getAlarmFile(context).delete();
+        this.unRegister(context);
     }
 
     public void reset(Context context) {
         this.register(context);
     }
 
+    public static void resetAll(Context context) {
+        String alarmsFolder = context.getFilesDir().getAbsolutePath() + "/alarms/";
+
+        File alarms = new File(alarmsFolder);
+
+        for (File f: alarms.listFiles()) {
+            try {
+                FileInputStream fileInputStream = new FileInputStream(f);
+                ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+                Alarm a = (Alarm) objectInputStream.readObject();
+
+                a.reset(context);
+            } catch (FileNotFoundException | ClassNotFoundException forcnfe) {
+                //This should never occur, silently die.
+                //TODO add proper logging
+            } catch (IOException ioe) {
+                Toast.makeText(context, "Unexpected failure: " + ioe.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
     private boolean store(Context context){
-        this.saved_alarm = Alarm.getAlarmFilePath(context, this);
-//        Log.i("Persistent Alarm", this.saved_alarm);
+        File f = this.getAlarmFile(context);
+
+        if (f.exists()) {
+            return true;
+        }
+
+        this.saved_alarm = f.getPath();
 
         try {
-//            Log.i("Persistent Alarm", "starting...");
-            File f = this.getAlarmFile(context);
             f.getParentFile().mkdirs();
-//            Log.i("Persistent Alarm", "dirs created");
             boolean result = f.createNewFile();
-//            Log.i("Persistent Alarm", "File was " + (result ? "" : "not") + " created");
             FileOutputStream outputStream = new FileOutputStream(f);
-//            Log.i("Persistent Alarm", "outputstream opened");
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
-//            Log.i("Persistent Alarm", "objectoutputstream opened");
             objectOutputStream.writeObject(this);
-//            Log.i("Persistent Alarm", "object written");
             objectOutputStream.close();
-//            Log.i("Persistent Alarm", "oos closed");
             outputStream.close();
-//            Log.i("Persistent Alarm", "os closed");
         } catch (FileNotFoundException fnfe) {
             Toast.makeText(context, "File " + this.saved_alarm + " not found!", Toast.LENGTH_LONG).show();
-//            Log.i("Persistent Alarm", "fnfe: " + fnfe.getMessage());
             return false;
         } catch (IOException ioe) {
             Toast.makeText(context, "IOException! " + ioe.getMessage(), Toast.LENGTH_LONG).show();
-//            Log.i("Persistent Alarm", "ioe: " + ioe.getMessage());
             return false;
         }
         return true;
     }
 
     private boolean register(Context context) {
+        if (Alarm.isSet(this.game, context)) {
+            return true;
+        }
+
         AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
         Intent intent = new Intent(context, AlarmReceiver.class);
@@ -135,8 +157,19 @@ public class Alarm implements Parcelable, Serializable {
         intent.setAction("com.smartsports.nbaalarm.ALARM_TRIGGER");
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, this.hashCode(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
         am.set(AlarmManager.RTC_WAKEUP, this.game.getStart().getTime(), pendingIntent);
+
+        return true;
+    }
+
+    private boolean unRegister(Context context) {
+        AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+
+        Intent intent = new Intent(context, AlarmReceiver.class);
+        intent.setAction("com.smartsports.nbaalarm.ALARM_TRIGGER");
+
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, this.hashCode(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        am.cancel(pendingIntent);
 
         return true;
     }
@@ -146,9 +179,13 @@ public class Alarm implements Parcelable, Serializable {
         return this.game;
     }
 
+    public static boolean isSet(Game game, Context context) {
+        return (new File(Alarm.getAlarmFilePath(context, game))).exists();
+    }
+
     @Override
     public String toString() {
-        return this.game.getStart().getTime() + "_" + this.game.toString();
+        return Alarm.getAlarmFileName(this.game);
     }
 
     @Override
