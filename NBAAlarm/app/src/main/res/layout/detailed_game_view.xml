@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -15,11 +16,11 @@
         android:layout_height="wrap_content"
         android:layout_weight="0.08"
         android:text="team1"
-        android:textColor="#fff"
         android:textAlignment="center"
-        android:textStyle="bold"
         android:textAppearance="@android:style/TextAppearance.Material.Small"
-        android:textSize="35sp" />
+        android:textColor="#000"
+        android:textSize="35sp"
+        android:textStyle="bold" />
 
     <TextView
         android:layout_width="match_parent"
@@ -36,7 +37,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="0.08"
         android:text="team2"
-        android:textColor="#fff"
+        android:textColor="#000"
         android:textAlignment="center"
         android:textStyle="bold"
         android:textSize="35sp" />
@@ -47,7 +48,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="0.08"
         android:textAlignment="center"
-        android:textColor="#fff"
+        android:textColor="#000"
         android:text="Date"
         android:textStyle="bold"
         android:textSize="16sp" />
@@ -57,21 +58,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
 	    android:textAlignment="center"
-        android:textColor="#fff"
+        android:textColor="#000"
         android:textStyle="bold"
         android:layout_weight="0.08"
-        android:text="Starting time: unknown"
-        android:textSize="16sp" />
-
-    <TextView
-        android:id="@+id/dgvEndTime"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.08"
-	    android:textAlignment="center"
-        android:textColor="#fff"
-        android:textStyle="bold"
-        android:text="End time: unknown"
+        android:text="@string/start_time_unknown"
         android:textSize="16sp" />
 
     <TextView
@@ -80,9 +70,9 @@
         android:layout_height="wrap_content"
         android:layout_weight="0.08"
 	    android:textAlignment="center"
-        android:textColor="#fff"
+        android:textColor="#000"
         android:textStyle="bold"
-        android:text="Alarm is not set"
+        android:text="@string/alarm_set"
         android:textSize="16sp" />
 
     <Button
@@ -90,8 +80,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="0.08"
-        android:textSize="20sp"
+        android:allowUndo="false"
+        android:background="@drawable/button_nobkg"
+        android:elevation="0dp"
+        android:fontFamily="monospace"
         android:onClick="setAlarm"
-	    android:background="@drawable/button_nobkg"
-        android:text="Set alarm for this game" />
+        android:text="@string/set_alarm"
+        android:textSize="20sp"
+        android:visibility="visible" />
 </LinearLayout>

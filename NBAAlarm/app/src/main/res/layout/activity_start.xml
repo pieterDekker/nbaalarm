@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#ffff"
+    android:background="#ffffff"
     android:padding="15px"
     tools:context=".activities.Start">
 
@@ -20,7 +20,7 @@
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:layout_marginTop="5dp"
-        android:text="Refresh Game List" />
+        android:text="@string/refresh_game_list" />
 
     <Button
         android:id="@+id/asTeamListButton"
@@ -32,7 +32,7 @@
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:layout_marginTop="5dp"
-        android:text="View Team List" />
+        android:text="@string/filter_games_team" />
 
     <ListView
         android:id="@+id/game_list"

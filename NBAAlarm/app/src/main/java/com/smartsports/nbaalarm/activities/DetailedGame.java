@@ -11,8 +11,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.smartsports.nbaalarm.R;
-import com.smartsports.nbaalarm.models.*;
 import com.smartsports.nbaalarm.models.Alarm;
+import com.smartsports.nbaalarm.models.Game;
 
 import java.text.SimpleDateFormat;
 import java.util.TimeZone;
@@ -30,10 +30,11 @@ public class DetailedGame extends AppCompatActivity {
         setContentView(R.layout.detailed_game_view);
 	    getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setDisplayShowCustomEnabled(true);
-        getSupportActionBar().setCustomView(R.layout.custom_action_bar);
+        getSupportActionBar().setCustomView(R.layout.custom_action_bar2);
         getSupportActionBar().setTitle("");
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
         View view = getSupportActionBar().getCustomView();
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         if(getIntent().hasExtra("game")) {
             this.game = (Game) getIntent().getExtras().get("game");
@@ -45,7 +46,6 @@ public class DetailedGame extends AppCompatActivity {
     }
 
     public void setAlarm(View view) {
-        Log.i("Alarmas", "attempt to set alarm");
         if(!game.isAlarmSet(this.getApplicationContext())) {
             // Remove an alarm for the current game
             game.setAlarm(this.getApplicationContext());

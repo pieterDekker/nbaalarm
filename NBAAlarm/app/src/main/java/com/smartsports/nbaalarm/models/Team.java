@@ -44,6 +44,14 @@ public class Team implements Parcelable, Serializable {
         }
     };
 
+    public boolean equals(Team t) {
+        return t.name.equals(this.name) && t.id.equals(this.id);
+    }
+
+    public boolean equals(String s) {
+        return s.equals(this.id) || s.equals(this.name);
+    }
+
     public String getName() {
         return name;
     }

@@ -36,7 +36,7 @@ public class NBADatabaseConnector extends DatabaseConnector {
     protected void onPreExecute() {
         super.onPreExecute();
         Button refreshButton = (Button) main_activity.findViewById(R.id.asRefreshButton);
-        refreshButton.setText("Fetching data");
+        refreshButton.setText(main_activity.getString(R.string.fetching_data));
     }
 
     @Override
@@ -50,6 +50,7 @@ public class NBADatabaseConnector extends DatabaseConnector {
         super.onPostExecute(null);
     }
 
+    // Json to ArrayList<Game> parser for nba.net match list
     private void parseNBAGames() {
         try {
             JSONArray leagueGames = new JSONObject(result).getJSONObject("league").getJSONArray("standard");
@@ -77,17 +78,16 @@ public class NBADatabaseConnector extends DatabaseConnector {
                 }
             }
 
-            // Insert upcoming ? matches in games array
-            int MATCHES_IN_DATABASE = 30, MAX_SEARCHES = 100;
+            int MATCHES_IN_DATABASE = 25;
+            // Insert upcoming MATCHES_IN_DATABASE matches in games array
             Date startTime;
             int i = high, j=0;
             String team1, team2;
-            while(((game = leagueGames.getJSONObject(i)) != null) && (i<(high+MAX_SEARCHES)) && (j<MATCHES_IN_DATABASE)) {
+            while(((game = leagueGames.getJSONObject(i)) != null) && (j<MATCHES_IN_DATABASE)) {
                 try {
                     startTime = sdf.parse(game.getString("startTimeUTC").replaceAll("[TZ]", ""));
                     team1 = game.getJSONObject("hTeam").getString("teamId");
                     team2 = game.getJSONObject("vTeam").getString("teamId");
-                    Log.d("NBAConn", teamfilter + " 1: " + team1 + " 2:" + team2);
                     if(teamfilter.equals("none") || teamfilter.equals(team1) || teamfilter.equals(team2)) {
                         games.add(new Game(getTeamById(team1), getTeamById(team2), startTime));
                         j++;
@@ -101,13 +101,13 @@ public class NBADatabaseConnector extends DatabaseConnector {
             Log.e("JSONException", "Error: " + e.getMessage().toString());
         } finally {
             Button refreshButton = (Button) main_activity.findViewById(R.id.asRefreshButton);
-            refreshButton.setText("Refresh Game List");
+            refreshButton.setText(main_activity.getString(R.string.refresh_game_list));
         }
     }
 
     private Team getTeamById(String id) {
         for(Team t : main_activity.getTeams()) {
-            if(t.getId().equals(id)) return t;
+            if(t.equals(id)) return t;
         }
         return new Team(id, id);
     }
